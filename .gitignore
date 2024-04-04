@@ -44,3 +44,4 @@ doc/
 /dist/
 /out/
 *.iml
+*.idea
