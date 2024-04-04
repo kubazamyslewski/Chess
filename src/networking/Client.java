@@ -1,5 +1,8 @@
 package networking;
 
+import core.Game;
+import core.Move;
+
 import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -9,7 +12,7 @@ public class Client implements Runnable{
     protected Socket socket;
     protected PrintWriter output;
     protected BufferedReader input;
-    protected Game game
+    protected Game game;
 
     public Client(){
 
