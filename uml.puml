@@ -1,0 +1,319 @@
+@startuml
+class players.NetworkPlayer {
+~ String name
+~ Color color
+~ PlayerType playerType
+~ boolean goDown
++ Color getColor()
++ String getName()
++ PlayerType getPlayerType()
++ boolean isGoDown()
++ void setGoDown(boolean)
++ void setName(String)
++ void setType(PlayerType)
++ Piece getPromotionPiece(Chessboard)
+}
+
+
+class ai.AIFactory {
++ {static} AI getAI(int)
+}
+
+class core.pieces.Rook {
+# boolean hasMoved
++ boolean getHasMoved()
++ void setHasMoved(boolean)
+}
+
+
+enum enums.PlayerType {
++  HUMAN
++  NETWORK_USER
++  COMPUTER
+}
+
+class core.pieces.Queen {
+}
+class core.pieces.Pawn {
+# boolean down
++ boolean getDown()
++ void setDown(boolean)
+}
+
+
+class players.PlayerFactory {
++ {static} Player createPlayer(PlayerType,String,Color)
+}
+
+class core.GameLogic {
++ {static} boolean isCheckmate(Player,Square[][])
++ {static} boolean isStealmate(Player,Square[][])
++ {static} boolean isCheck(Player,Square[][])
++ {static} boolean isMoveLegal(Move,Square[][])
++ {static} boolean canPawnBePromoted(Square)
+}
+
+class core.Chessboard {
+- Square[][] squares
++ void setPiecesAtStart(Player,Player)
++ void makeMove(Move)
++ void setSquares(Square[][])
++ Square[][] getSquares()
+}
+
+
+interface players.Player {
++ Color getColor()
++ String getName()
++ PlayerType getPlayerType()
++ boolean isGoDown()
++ void setGoDown(boolean)
++ void setName(String)
++ void setType(PlayerType)
++ Piece getPromotionPiece(Chessboard)
+}
+
+class players.ComputerPlayer {
+- String name
+- Color color
+- PlayerType playerType
+- boolean goDown
++ Color getColor()
++ String getName()
++ PlayerType getPlayerType()
++ boolean isGoDown()
++ void setGoDown(boolean)
++ void setName(String)
++ void setType(PlayerType)
++ Piece getPromotionPiece(Chessboard)
+}
+
+
+class ai.levels.Level1 {
++ Move getMove(Game,Move)
+}
+
+class core.Square {
+- int x
+- int y
+- Piece piece
++ void setX(int)
++ int getX()
++ void setY(int)
++ int getY()
++ void setPiece(Piece)
++ Piece getPiece()
+}
+
+
+class core.Game {
+- Chessboard board
+- Player playerWhite
+- Player playerBlack
+- ArrayList<Move> allMoves
+- boolean isWhitePlayerTurn
+- boolean enPassant
+# void init()
+# boolean enPassant()
++ void move()
++ void newGame()
++ void endGame()
++ void moveNetworkAction()
++ void doComputerMove()
++ void switchActive()
++ void isCheckMate()
++ void isStaleMate()
++ void saveGame()
++ void loadGame()
++ Chessboard getChessboard()
++ void setBoard(Chessboard)
++ Player getPlayerWhite()
++ void setPlayerWhite(Player)
++ Player getPlayerBlack()
++ void setPlayerBlack(Player)
++ ArrayList<Move> getAllMoves()
++ void setAllMoves(ArrayList<Move>)
++ boolean isWhitePlayerTurn()
++ void setWhitePlayerTurn(boolean)
++ boolean isEnPassant()
++ void setEnPassant(boolean)
+}
+
+
+class core.Move {
+- Square startSquare
+- Square endSquare
+- boolean promotion
+- Square promotionPiece
++ void setEndSquare(Square)
++ Square getEndSquare()
++ void setStartSquare(Square)
++ Square getStartSquare()
++ void setPromotion(boolean)
++ boolean isPromotion()
++ void setPromotionPiece(Square)
++ Square getPromotionPiece()
+}
+
+
+interface ai.AI {
++ Move getMove(Game,Move)
+}
+
+class networking.Server {
+- {static} Map<Integer,Table> tables
++ {static} int PORT
+- {static} ServerSocket serverSocket
+- {static} boolean isRunning
+- {static} void runServer()
++ void run()
++ void newTable(int,String)
++ boolean isRunning()
+}
+
+
+class core.PieceBehaviour {
++ {static} Move[] kingLegalMoves(Square,Square[][])
++ {static} Move[] pawnLegalMoves(Square,Square[][])
++ {static} Move[] rookLegalMoves(Square,Square[][])
++ {static} Move[] bishopLegalMoves(Square,Square[][])
++ {static} Move[] knightLegalMoves(Square,Square[][])
++ {static} Move[] quuenLegalMoves(Square,Square[][])
+}
+
+abstract class core.pieces.Piece {
+# Player player
+# String name
++ String getName()
++ void setName(String)
++ Player getPlayer()
++ void setPlayer(Player)
+}
+
+
+class core.pieces.King {
+# boolean hasMoved
++ boolean getHasMoved()
++ void setHasMoved(boolean)
+}
+
+
+class core.FileHandler {
+- String filename
++ void saveGameToFile(List<Move>)
++ List<Move> loadGameFromFile()
+}
+
+
+class ai.levels.Level2 {
++ Move getMove(Game,Move)
+}
+
+class networking.Client {
+# Socket socket
+# PrintWriter output
+# BufferedReader input
+# Game game
++ boolean join(int,String,String)
++ void run()
+- void handleNewMoveFromServer()
+- void handleCommands()
++ void sendMove(Move,String)
++ Socket getSocket()
++ PrintWriter getOutput()
++ BufferedReader getInput()
++ void setSocket(Socket)
++ void setOutput(PrintWriter)
++ void setInput(BufferedReader)
+}
+
+
+class core.pieces.Knight {
+}
+class networking.Table {
+- networking.ServerClient clientPlayerWhite
+- networking.ServerClient clientPlayerBlack
+- String password
++ void sendMoveToOther(ServerClient,Move,String)
++ boolean isAllPlayers()
++ void addPlayer(networking.ServerClient)
++ void setPassword(String)
++ String getPassword()
+}
+
+
+class core.pieces.Bishop {
+}
+enum networking.Protocol {
++  EVERYTHING_OK
++  ERROR_INVALID_TABLE_ID
++  ERROR_TABLE_IS_FULL
++  ERROR_INVALID_PASSWORD
++  MOVE
++  STOP
++  STOPPED
++  NULL_COMMAND
+- int value
++ {static} Protocol get(int)
++ int getValue()
+}
+
+
+enum enums.Color {
++  WHITE
++  BLACK
+# String colorName
+# char symbol
++ String getColorName()
++ char getSymbol()
++ String getSymbolAsString()
++ void setColorName(String)
++ void setSymbol(char)
+}
+
+
+class networking.ServerClient {
++ BufferedReader input
++ PrintWriter output
+- String username
+- Table table
++ void run()
++ String getUsername()
++ void setUsername(String)
+}
+
+
+class players.HumanPlayer {
+- String name
+- Color color
+- PlayerType playerType
+- boolean goDown
++ Color getColor()
++ String getName()
++ PlayerType getPlayerType()
++ boolean isGoDown()
++ void setGoDown(boolean)
++ void setName(String)
++ void setType(PlayerType)
++ Piece getPromotionPiece(Chessboard)
+}
+
+
+
+
+players.HumanPlayer <|-- players.NetworkPlayer
+core.pieces.Piece <|-- core.pieces.Rook
+core.pieces.Piece <|-- core.pieces.Queen
+core.pieces.Piece <|-- core.pieces.Pawn
+java.io.Serializable <|-- players.Player
+players.Player <|.. players.ComputerPlayer
+ai.AI <|.. ai.levels.Level1
+networking.Runnable <|.. networking.Server
+core.pieces.Piece <|-- core.pieces.King
+ai.levels.AI <|.. ai.levels.Level2
+networking.Runnable <|.. networking.Client
+core.pieces.Piece <|-- core.pieces.Knight
+core.pieces.Piece <|-- core.pieces.Bishop
+networking.Runnable <|.. networking.ServerClient
+players.Player <|.. players.HumanPlayer
+@enduml
