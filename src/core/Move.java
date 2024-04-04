@@ -12,13 +12,12 @@ public class Move {
      private Square endSquare;
 
      private boolean promotion = false;
-     private Piece movedPiece = null;
+
      private Square promotionPiece;
 
-     public Move(Square startSquare, Square endSquare, Piece movedPiece){
+     public Move(Square startSquare, Square endSquare){
          this.startSquare = startSquare;
          this.endSquare = endSquare;
-         this.movedPiece = movedPiece;
      }
 
     public void setEndSquare(Square endSquare) {
