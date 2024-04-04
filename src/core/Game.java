@@ -3,6 +3,7 @@ package core;
 import players.Player;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class controls the game by starting it, moving pieces, determining winner
@@ -68,6 +69,25 @@ public class Game {
     }
     public void isStaleMate(){
 
+    }
+
+    public void saveGame() {
+        // Create an instance of FileHandler in the constructor or elsewhere in the class
+        FileHandler fileHandler = new FileHandler("game1.xml");
+
+        // Get the list of moves representing the game history or the state of the board
+        List<Move> moves = null;
+        // Get the list of moves representing the game history or the state of the board
+        // Call the saveGameToFile method using the fileHandler field
+        fileHandler.saveGameToFile(moves);
+    }
+
+
+    // Metoda wczytująca stan gry z pliku
+    public void loadGame() {
+        FileHandler fileHandler = null;
+        List<Move> moves = fileHandler.loadGameFromFile();
+        // Przywróć stan gry na podstawie wczytanych ruchów
     }
 
     public Chessboard getChessboard() {

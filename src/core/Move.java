@@ -1,5 +1,7 @@
 package core;
 
+import core.pieces.Piece;
+
 /**
  *  This class carries an information on from what to what square player wants to move
  *  Later if the move is promotion change the promotion boolean to true
@@ -10,11 +12,13 @@ public class Move {
      private Square endSquare;
 
      private boolean promotion = false;
+     private Piece movedPiece = null;
      private Square promotionPiece;
 
-     public Move(){
+     public Move(Square startSquare, Square endSquare, Piece movedPiece){
          this.startSquare = startSquare;
          this.endSquare = endSquare;
+         this.movedPiece = movedPiece;
      }
 
     public void setEndSquare(Square endSquare) {
