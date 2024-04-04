@@ -1,5 +1,7 @@
 package networking;
 
+import core.Move;
+
 public class Table {
     private networking.ServerClient clientPlayerWhite;
     private networking.ServerClient clientPlayerBlack;
