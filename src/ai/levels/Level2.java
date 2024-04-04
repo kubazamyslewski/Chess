@@ -31,7 +31,7 @@ public class Level2 implements ai.AI{
         // Add your AI logic here
 
         // Return a placeholder move for now
-        return new Move();
+        return new Move(null, null);
 
     }
 }
