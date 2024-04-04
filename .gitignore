@@ -27,3 +27,19 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+#compiled class files
+*.class
+#log files
+*.log
+#intellij files
+.idea/
+
+*.iml
+# Ignore Javadoc output directory
+doc/
+*.plr
+
+/build/
+/dist/
+/out/
