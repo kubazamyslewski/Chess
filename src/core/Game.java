@@ -26,11 +26,6 @@ public class Game {
 
     }
 
-    /**
-     *  checks if latest move is en Passant and if it is a legal move
-     *  if no function returns false
-     * if yes it automatically makes a move
-
      /**
      * Checks if latest move is en Passant and if it is a legal move
      * if no function return false
