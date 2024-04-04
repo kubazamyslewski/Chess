@@ -43,3 +43,4 @@ doc/
 /build/
 /dist/
 /out/
+*.iml
