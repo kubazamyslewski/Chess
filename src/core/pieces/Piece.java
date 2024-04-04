@@ -1,6 +1,5 @@
 package core.pieces;
 
-import core.Colors;
 import players.Player;
 
 /**

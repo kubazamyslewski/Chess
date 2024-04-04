@@ -1,17 +1,17 @@
-package core;
+package enums;
 
 /**
  * This enum has two colors black and white
  * They have 2 variable colorName and symbol (which can be used in chess notation)
  */
-public enum Colors {
+public enum Color {
     WHITE("white", 'w'),
     BLACK("black",'b');
 
 
     protected String colorName;
     protected char symbol;
-    Colors(String colorName, char symbol){
+    Color(String colorName, char symbol){
         this.colorName = colorName;
         this.symbol = symbol;
     }
