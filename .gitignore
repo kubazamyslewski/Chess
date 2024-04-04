@@ -41,8 +41,6 @@ doc/
 *.plr
 
 /build/
-/dist/
 /out/
-*.iml
 *.idea
 .idea/copilot/
