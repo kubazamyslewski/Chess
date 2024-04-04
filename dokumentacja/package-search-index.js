@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"ai"},{"l":"ai.levels"},{"l":"All Packages","u":"allpackages-index.html"},{"l":"core"},{"l":"core.pieces"},{"l":"enums"},{"l":"networking"},{"l":"players"}];updateSearchResults();
