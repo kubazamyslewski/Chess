@@ -69,4 +69,53 @@ public class Game {
     public void isStaleMate(){
 
     }
+
+    public Chessboard getChessboard() {
+        return board;
+    }
+
+
+    public void setBoard(Chessboard board) {
+        this.board = board;
+    }
+
+    public Player getPlayerWhite() {
+        return playerWhite;
+    }
+
+    public void setPlayerWhite(Player playerWhite) {
+        this.playerWhite = playerWhite;
+    }
+
+    public Player getPlayerBlack() {
+        return playerBlack;
+    }
+
+    public void setPlayerBlack(Player playerBlack) {
+        this.playerBlack = playerBlack;
+    }
+
+    public ArrayList<Move> getAllMoves() {
+        return allMoves;
+    }
+
+    public void setAllMoves(ArrayList<Move> allMoves) {
+        this.allMoves = allMoves;
+    }
+
+    public boolean isWhitePlayerTurn() {
+        return isWhitePlayerTurn;
+    }
+
+    public void setWhitePlayerTurn(boolean whitePlayerTurn) {
+        isWhitePlayerTurn = whitePlayerTurn;
+    }
+
+    public boolean isEnPassant() {
+        return enPassant;
+    }
+
+    public void setEnPassant(boolean enPassant) {
+        this.enPassant = enPassant;
+    }
 }

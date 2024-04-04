@@ -29,4 +29,12 @@ public enum Colors {
     {
         return String.valueOf(symbol);
     }
+
+    public void setColorName(String colorName) {
+        this.colorName = colorName;
+    }
+
+    public void setSymbol(char symbol) {
+        this.symbol = symbol;
+    }
 }

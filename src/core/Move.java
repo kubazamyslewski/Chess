@@ -12,7 +12,7 @@ public class Move {
      private boolean promotion = false;
      private Square promotionPiece;
 
-     public Move(Square startSquare, Square endSquare){
+     public Move(){
          this.startSquare = startSquare;
          this.endSquare = endSquare;
      }
