@@ -3,8 +3,8 @@ package networking;
 import core.Move;
 
 public class Table {
-    private networking.ServerClient clientPlayerWhite;
-    private networking.ServerClient clientPlayerBlack;
+    private Service clientPlayerWhite;
+    private Service clientPlayerBlack;
     private String password;
 
     Table(String password){
@@ -16,7 +16,7 @@ public class Table {
      * @param sender : who is sending the move
      * @param promoted : if promoted to what piece, else null
      */
-    public void sendMoveToOther(ServerClient sender, Move move, String promoted){
+    public void sendMoveToOther(Service sender, Move move, String promoted){
 
     }
 
@@ -32,7 +32,7 @@ public class Table {
      * Method for adding players to the table
      * @param client : client that wants to join the table
      */
-    public void addPlayer(networking.ServerClient client){
+    public void addPlayer(Service client){
 
     }
 

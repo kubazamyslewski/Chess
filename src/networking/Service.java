@@ -3,7 +3,7 @@ package networking;
 import java.io.BufferedReader;
 import java.io.PrintWriter;
 
-public class ServerClient implements Runnable{
+public class Service implements Runnable{
     public BufferedReader input;
 
     public PrintWriter output;
@@ -13,7 +13,7 @@ public class ServerClient implements Runnable{
     private Table table;
 
 
-    ServerClient(BufferedReader input, PrintWriter output, String username, Table table){
+    Service(BufferedReader input, PrintWriter output, String username, Table table){
 
     }
 
