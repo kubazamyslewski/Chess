@@ -54,9 +54,9 @@ public class Client implements Runnable{
 
     /**
      * Method for sending moves to ServerClient
-     * @param promoted : if promoted name of the piece, else null
+     *
      */
-    public void sendMove(Move move, String promoted){
+    public void sendMove(Move move){
 
     }
 
