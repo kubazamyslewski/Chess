@@ -18,7 +18,9 @@ public class Game {
     
     
     public Game(){
-        init();
+        newGame();
+        isWhitePlayerTurn = true;
+        
     }
 
     /**
@@ -39,10 +41,11 @@ public class Game {
      */
     
     public void newGame(){
-
+    	init();
     }
+    
     public void endGame(){
-
+    	System.out.println("Thanks for playing");
     }
 
     public void moveNetworkAction(){
@@ -54,7 +57,7 @@ public class Game {
      * Switches the current active player
      */
     public void switchActive(){
-
+    	isWhitePlayerTurn = !isWhitePlayerTurn;
     }
 
     public void isCheckMate(){

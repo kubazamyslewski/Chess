@@ -10,10 +10,6 @@ import players.Player;
  */
 public class Chessboard {
     private Square[][] squares;
-    
-    public Chessboard(){
-    	
-    }
 
     /**
      * Make a board full of sqares
@@ -94,6 +90,12 @@ public class Chessboard {
      * @param move
      */
     public void makeMove(Move move){
+    	Square startSquare = move.getStartSquare();
+    	Square endSquare = move.getEndSquare();
+    	
+    	endSquare.setPiece(null);
+    	endSquare.setPiece(startSquare.getPiece());
+    	startSquare.setPiece(null);
     	
     }
 
