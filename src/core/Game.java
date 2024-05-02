@@ -10,12 +10,13 @@ import java.util.List;
  */
 public class Game {
     private Chessboard board;
-    private Player playerWhite;
-    private Player playerBlack;
+    Player playerWhite;
+    Player playerBlack;
     private ArrayList<Move> allMoves;
 
     private boolean isWhitePlayerTurn=true;
-    private boolean enPassant = false;
+    
+    
     public Game(){
         init();
     }
@@ -24,25 +25,19 @@ public class Game {
      * for initializing all objects
      */
     protected final void init(){
-
+    	board.setSquares();
+    	board.setPiecesAtStart(playerWhite, playerBlack);
     }
-
-     /**
-     * Checks if latest move is en Passant and if it is a legal move
-     * if no function return false
-     * if yes it calls the move functions and returns true
-     * @return
-     */
-    protected boolean enPassant(){
-        return false;
+    
+    
+    public static void main(String[] args) {
+    	Game game = new Game();
     }
 
     /**
      * makes the lastest move in ArrayList
      */
-    public void move(){
-
-    }
+    
     public void newGame(){
 
     }
@@ -53,9 +48,7 @@ public class Game {
     public void moveNetworkAction(){
 
     }
-    public void doComputerMove(){
-
-    }
+    
 
     /**
      * Switches the current active player
@@ -70,6 +63,11 @@ public class Game {
     public void isStaleMate(){
 
     }
+    
+    public void move(){
+
+    }
+
 
     public void saveGame() {
         // Create an instance of FileHandler in the constructor or elsewhere in the class
@@ -129,13 +127,5 @@ public class Game {
 
     public void setWhitePlayerTurn(boolean whitePlayerTurn) {
         isWhitePlayerTurn = whitePlayerTurn;
-    }
-
-    public boolean isEnPassant() {
-        return enPassant;
-    }
-
-    public void setEnPassant(boolean enPassant) {
-        this.enPassant = enPassant;
     }
 }

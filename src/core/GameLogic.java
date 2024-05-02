@@ -8,6 +8,17 @@ import java.awt.*;
  * This class contains static methods that are checking game state using 8x8 table from chessboard
  */
 public class GameLogic {
+	
+	private boolean enPassant = false;
+	
+	public boolean isEnPassant() {
+        return enPassant;
+    }
+
+    public void setEnPassant(boolean enPassant) {
+        this.enPassant = enPassant;
+    }
+	
     /**
      * checks if a given player is checkmated
      * @param player
@@ -37,6 +48,22 @@ public class GameLogic {
     public static boolean isCheck(Player player, Square[][] squares){
         return false;
     }
+    
+    /**
+     * Checks if latest move is en Passant and if it is a legal move
+     * if no function return false
+     * if yes it calls the move functions and returns true
+     * @return
+     */
+    protected boolean enPassant(){
+        return false;
+    }
+    
+    public void doComputerMove(){
+
+    }
+    
+    
 
     /**
      * The most complicated method

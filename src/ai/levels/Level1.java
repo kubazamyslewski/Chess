@@ -21,6 +21,6 @@ public class Level1 implements AI {
         // Special cases like pawn promotion are not handled.
         // Consider adding more sophisticated logic for better performance.
 
-        return new Move();
+        return new Move(null, null);
     }
 }
