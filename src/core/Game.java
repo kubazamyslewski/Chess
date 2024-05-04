@@ -1,25 +1,56 @@
 package core;
 
 import players.Player;
+import players.PlayerFactory;
+import java.util.Scanner;
+
+import enums.Color;
+import enums.PlayerType;
 
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * This class controls the game by starting it, moving pieces, determining winner
  */
-public class Game {
+public class Game extends GameLogic {
+	
     private Chessboard board;
     Player playerWhite;
     Player playerBlack;
     private ArrayList<Move> allMoves;
+    public Scanner systemin = new Scanner(System.in);
 
     private boolean isWhitePlayerTurn=true;
     
     
     public Game(){
         newGame();
-        isWhitePlayerTurn = true;
+        setWhitePlayerTurn(true);
+        setEnPassant(false);
+        
+        PlayerFactory playerFactory = new PlayerFactory();
+        int type;
+        String playername;
+        System.out.println("Konfiguracja białego gracza");
+        System.out.println("Podaj typ białego gracza. Do wyboru:\n 0 - człowiek\n 1 - człowiek internetowy\n 2 - komputer");
+        type = systemin.nextInt();
+        systemin.nextLine();
+        System.out.println("Podaj nazwę gracza");
+        playername = systemin.nextLine();
+        playerWhite = playerFactory.createPlayer(PlayerType.getPlayerType(type), playername, Color.WHITE);
+        System.out.println();
+        System.out.println("Konfiguracja czarnego gracza");
+        System.out.println("Podaj typ czarnego gracza. Do wyboru:\n 0 - człowiek\n 1 - człowiek internetowy\n 2 - komputer");
+        type = systemin.nextInt();
+        systemin.nextLine();
+        System.out.println("Podaj nazwę gracza");
+        playername = systemin.nextLine();
+        playerBlack = playerFactory.createPlayer(PlayerType.getPlayerType(type), playername, Color.BLACK);
+        type = 0;
+        playername = null;
+        playerFactory = null;
         
     }
 
@@ -27,6 +58,7 @@ public class Game {
      * for initializing all objects
      */
     protected final void init(){
+    	board = new Chessboard();
     	board.setSquares();
     	board.setPiecesAtStart(playerWhite, playerBlack);
     }
@@ -35,10 +67,6 @@ public class Game {
     public static void main(String[] args) {
     	Game game = new Game();
     }
-
-    /**
-     * makes the lastest move in ArrayList
-     */
     
     public void newGame(){
     	init();
@@ -59,14 +87,10 @@ public class Game {
     public void switchActive(){
     	isWhitePlayerTurn = !isWhitePlayerTurn;
     }
-
-    public void isCheckMate(){
-
-    }
-    public void isStaleMate(){
-
-    }
     
+    /**
+     * makes the lastest move in ArrayList
+     */
     public void move(){
 
     }
@@ -91,6 +115,15 @@ public class Game {
         // Przywróć stan gry na podstawie wczytanych ruchów
     }
 
+    
+    public boolean isWhitePlayerTurn() {
+        return isWhitePlayerTurn;
+    }
+
+    public void setWhitePlayerTurn(boolean whitePlayerTurn) {
+        isWhitePlayerTurn = whitePlayerTurn;
+    }
+    
     public Chessboard getChessboard() {
         return board;
     }
@@ -124,11 +157,5 @@ public class Game {
         this.allMoves = allMoves;
     }
 
-    public boolean isWhitePlayerTurn() {
-        return isWhitePlayerTurn;
-    }
-
-    public void setWhitePlayerTurn(boolean whitePlayerTurn) {
-        isWhitePlayerTurn = whitePlayerTurn;
-    }
+    
 }

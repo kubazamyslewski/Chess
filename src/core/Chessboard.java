@@ -15,6 +15,7 @@ public class Chessboard {
      * Make a board full of sqares
      */
     public void setSquares() {
+    	squares = new Square[8][8];
     	for (int x=0; x<8; x++) {
     		for (int y=0; y<8; y++) {
     			squares[x][y] = new Square(x, y, null);
