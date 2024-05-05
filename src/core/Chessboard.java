@@ -1,5 +1,7 @@
 package core;
 
+import java.io.Serializable;
+
 import core.pieces.*;
 import players.Player;
 
@@ -8,7 +10,7 @@ import players.Player;
  * It initializes placement of squares and pieces on board
  * It also changes the 8x8 table when the movement is done
  */
-public class Chessboard {
+public class Chessboard implements Serializable{
     private Square[][] squares;
 
     /**

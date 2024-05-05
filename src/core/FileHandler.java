@@ -17,15 +17,29 @@ import java.util.ArrayList;
  * This class provides methods for saving and loading game data to/from XML files.
  */
 public class FileHandler {
-    private String filename;
+    private String foldername;
 
     /**
      * Constructor for FileHandler class.
      *
-     * @param filename The name of the file to be handled.
+     * @param foldername The name of the file to be handled.
      */
-    public FileHandler(String filename) {
-        this.filename = filename;
+    public FileHandler(String foldername) {
+        this.foldername = foldername;
+    }
+    
+    public void makeAFolder(String name) {
+        File folder = new File(name);
+
+        if (!folder.exists()) {
+            if (folder.mkdir()) {
+                System.out.println("Folder \"" + name + "\" został utworzony.");
+            } else {
+                System.out.println("Nie udało się utworzyć folderu.");
+            }
+        } else {
+            System.out.println("Folder o nazwie \"" + name + "\" już istnieje.");
+        }
     }
 
     /**
@@ -34,9 +48,12 @@ public class FileHandler {
      * @param allMoves The list of moves representing the game history.
      */
     public void saveGameToFile(List<Move> allMoves, Chessboard board, Player playerWhite, Player playerBlack, boolean isWhitePlayerTurn, boolean isEnPassant, Square whereEnPassant) {
+    	
+    	makeAFolder(foldername);
+    	
     	// allMoves
     	try {
-            FileOutputStream fileOut = new FileOutputStream("allMoves.ser");
+            FileOutputStream fileOut = new FileOutputStream(foldername + "\\allMoves.ser");
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
             out.writeObject(allMoves);
             out.close();
@@ -47,7 +64,7 @@ public class FileHandler {
         }
     	// Chessboard
     	try {
-            FileOutputStream fileOut = new FileOutputStream("board.ser");
+            FileOutputStream fileOut = new FileOutputStream(foldername + "\\board.ser");
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
             out.writeObject(board);
             out.close();
@@ -58,7 +75,7 @@ public class FileHandler {
         }
     	// playerWhite
     	try {
-            FileOutputStream fileOut = new FileOutputStream("playerWhite.ser");
+            FileOutputStream fileOut = new FileOutputStream(foldername + "\\playerWhite.ser");
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
             out.writeObject(playerWhite);
             out.close();
@@ -69,7 +86,7 @@ public class FileHandler {
         }
     	// playerBlack
     	try {
-            FileOutputStream fileOut = new FileOutputStream("playerBlack.ser");
+            FileOutputStream fileOut = new FileOutputStream(foldername + "\\playerBlack.ser");
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
             out.writeObject(playerBlack);
             out.close();
@@ -80,7 +97,7 @@ public class FileHandler {
         }
     	// isWhitePlayerTurn
     	try {
-            FileOutputStream fileOut = new FileOutputStream("isWhitePlayerTurn.ser");
+            FileOutputStream fileOut = new FileOutputStream(foldername + "\\isWhitePlayerTurn.ser");
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
             out.writeObject(isWhitePlayerTurn);
             out.close();
@@ -91,7 +108,7 @@ public class FileHandler {
         }
     	// isEnPassant
     	try {
-            FileOutputStream fileOut = new FileOutputStream("isEnPassant.ser");
+            FileOutputStream fileOut = new FileOutputStream(foldername + "\\isEnPassant.ser");
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
             out.writeObject(isEnPassant);
             out.close();
@@ -102,7 +119,7 @@ public class FileHandler {
         }
     	// whereEnPassant
     	try {
-            FileOutputStream fileOut = new FileOutputStream("whereEnPassant.ser");
+            FileOutputStream fileOut = new FileOutputStream(foldername + "\\whereEnPassant.ser");
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
             out.writeObject(whereEnPassant);
             out.close();

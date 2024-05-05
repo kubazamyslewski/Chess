@@ -1,12 +1,14 @@
 package core;
 
+import java.io.Serializable;
+
 import core.pieces.Piece;
 
 /**
  * This class contains x, y to determine position on the board and Piece object
  * Basic tile on the chess board with a piece standing on it
  */
-public class Square {
+public class Square implements Serializable {
     //this class may be good for direct gui implementation
     private int x;
     private int y;

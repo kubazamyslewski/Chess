@@ -52,6 +52,8 @@ public class Game extends GameLogic {
         playername = null;
         playerFactory = null;
         
+        saveGame();
+        
     }
 
     /**
@@ -96,16 +98,16 @@ public class Game extends GameLogic {
     }
 
 
-//    public void saveGame() {
-//        // Create an instance of FileHandler in the constructor or elsewhere in the class
-//        FileHandler fileHandler = new FileHandler("game1.xml");
-//
-//        // Get the list of moves representing the game history or the state of the board
-//        List<Move> moves = null;
-//        // Get the list of moves representing the game history or the state of the board
-//        // Call the saveGameToFile method using the fileHandler field
-//        fileHandler.saveGameToFile(allMoves, board, playerBlack, playerWhite, isWhitePlayerTurn, isEnPassant, whereEnPassant);
-//    }
+    public void saveGame() {
+        // Create an instance of FileHandler in the constructor or elsewhere in the class
+        FileHandler fileHandler = new FileHandler("zapis");
+
+        // Get the list of moves representing the game history or the state of the board
+        List<Move> moves = null;
+        // Get the list of moves representing the game history or the state of the board
+        // Call the saveGameToFile method using the fileHandler field
+        fileHandler.saveGameToFile(allMoves, board, playerBlack, playerWhite, isWhitePlayerTurn, isEnPassant, whereEnPassant);
+    }
 
 
 //    // Metoda wczytująca stan gry z pliku

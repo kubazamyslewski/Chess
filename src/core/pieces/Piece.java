@@ -1,5 +1,7 @@
 package core.pieces;
 
+import java.io.Serializable;
+
 import players.Player;
 
 /**
@@ -7,7 +9,7 @@ import players.Player;
  * It has String name which is specified while the constructor is initialized
  * Also it has a Player object in it, mainly to determine Color
  */
-public abstract class Piece {
+public abstract class Piece implements Serializable{
     protected Player player;
     protected String name;
 
