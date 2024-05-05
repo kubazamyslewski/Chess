@@ -13,7 +13,7 @@ public class Move {
 
      private boolean promotion = false;
 
-     private Square promotionPiece;
+     private Piece promotionPiece;
 
      public Move(Square startSquare, Square endSquare){
          this.startSquare = startSquare;
@@ -44,11 +44,11 @@ public class Move {
         return promotion;
     }
 
-    public void setPromotionPiece(Square promotionPiece) {
+    public void setPromotionPiece(Piece promotionPiece) {
         this.promotionPiece = promotionPiece;
     }
 
-    public Square getPromotionPiece() {
+    public Piece getPromotionPiece() {
         return promotionPiece;
     }
 }
