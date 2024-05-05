@@ -28,7 +28,7 @@ public class Game extends GameLogic {
     public Game(){
         newGame();
         setWhitePlayerTurn(true);
-        setEnPassant(false);
+        setIsEnPassant(false);
         
         PlayerFactory playerFactory = new PlayerFactory();
         int type;
@@ -96,24 +96,24 @@ public class Game extends GameLogic {
     }
 
 
-    public void saveGame() {
-        // Create an instance of FileHandler in the constructor or elsewhere in the class
-        FileHandler fileHandler = new FileHandler("game1.xml");
+//    public void saveGame() {
+//        // Create an instance of FileHandler in the constructor or elsewhere in the class
+//        FileHandler fileHandler = new FileHandler("game1.xml");
+//
+//        // Get the list of moves representing the game history or the state of the board
+//        List<Move> moves = null;
+//        // Get the list of moves representing the game history or the state of the board
+//        // Call the saveGameToFile method using the fileHandler field
+//        fileHandler.saveGameToFile(allMoves, board, playerBlack, playerWhite, isWhitePlayerTurn, isEnPassant, whereEnPassant);
+//    }
 
-        // Get the list of moves representing the game history or the state of the board
-        List<Move> moves = null;
-        // Get the list of moves representing the game history or the state of the board
-        // Call the saveGameToFile method using the fileHandler field
-        fileHandler.saveGameToFile(moves);
-    }
 
-
-    // Metoda wczytująca stan gry z pliku
-    public void loadGame() {
-        FileHandler fileHandler = null;
-        List<Move> moves = fileHandler.loadGameFromFile();
-        // Przywróć stan gry na podstawie wczytanych ruchów
-    }
+//    // Metoda wczytująca stan gry z pliku
+//    public void loadGame() {
+//        FileHandler fileHandler = null;
+//        List<Move> moves = fileHandler.loadGameFromFile();
+//        // Przywróć stan gry na podstawie wczytanych ruchów
+//    }
 
     
     public boolean isWhitePlayerTurn() {

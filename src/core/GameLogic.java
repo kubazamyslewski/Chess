@@ -3,20 +3,31 @@ package core;
 import players.Player;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 /**
  * This class contains static methods that are checking game state using 8x8 table from chessboard
  */
 public class GameLogic {
 	
-	private boolean enPassant = false;
+	protected boolean isEnPassant = false;
+	
+	protected Square whereEnPassant = new Square(0, 0, null);
 	
 	public boolean isEnPassant() {
-        return enPassant;
+        return isEnPassant;
     }
+	
+	public Square whereEnPassant()  {
+		return whereEnPassant;
+	}
 
-    public void setEnPassant(boolean enPassant) {
-        this.enPassant = enPassant;
+    public void setIsEnPassant(boolean enPassant) {
+        this.isEnPassant = enPassant;
+    }
+    
+    public void setWhereEnPassant(Square whereEnPassant) {
+        this.whereEnPassant = whereEnPassant;
     }
 	
     /**
