@@ -100,6 +100,10 @@ public class Chessboard implements Serializable{
     	endSquare.setPiece(startSquare.getPiece());
     	startSquare.setPiece(null);
     	
+    	if (move.isPromotion()) {
+    		endSquare.setPiece(move.getPromotionPiece());
+		}
+    	
     }
 
     

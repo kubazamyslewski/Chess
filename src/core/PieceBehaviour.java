@@ -23,4 +23,7 @@ public class PieceBehaviour {
     public static Move[] quuenLegalMoves(Square checkedSquare, Square[][] squares){
         return null;
     }
+    public static Move[] passantLegalMoves(Square checkedSquare, Square[][] squares){
+        return null;
+    }
 }

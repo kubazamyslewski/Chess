@@ -5,6 +5,8 @@ import players.Player;
 import java.awt.*;
 import java.util.ArrayList;
 
+import enums.Color;
+
 /**
  * This class contains static methods that are checking game state using 8x8 table from chessboard
  */
@@ -30,13 +32,24 @@ public class GameLogic {
         this.whereEnPassant = whereEnPassant;
     }
 	
+    public static boolean isTurnCompilantWithColor(Game game, Player playerChecked, Player playerChecking, Square[][] squares) {
+    	if ((game.isWhitePlayerTurn() && (playerChecked.getColor() == Color.WHITE)) || (!game.isWhitePlayerTurn() && (playerChecked.getColor() == Color.BLACK))) {
+    		return true;
+    	}
+		return false;
+    	
+    }
     /**
      * checks if a given player is checkmated
      * @param player
      * @param squares
      * @return
      */
-    public static boolean isCheckmate(Player player, Square[][] squares){
+    public static boolean isCheckmate(Game game, Player playerChecked, Player playerChecking, Square[][] squares){
+    	// Jeśli jest tak, że jest szach i nie jest aktualnie ruch gracza który jest szachowany to jest mat
+    	if (!isTurnCompilantWithColor(game, playerChecked, playerChecking, squares) && isCheck(game, playerChecked, playerChecking, squares)) {
+    		return true;
+    	}
         return false;
     }
 
@@ -46,7 +59,7 @@ public class GameLogic {
      * @param squares
      * @return
      */
-    public static boolean isStealmate(Player player, Square[][] squares){
+    public static boolean isStealmate(Game game, Player player, Square[][] squares){
         return false;
     }
 
@@ -56,7 +69,9 @@ public class GameLogic {
      * @param squares
      * @return
      */
-    public static boolean isCheck(Player player, Square[][] squares){
+    public static boolean isCheck(Game game, Player playerChecked, Player playerChecking, Square[][] squares){
+    	Color colorChecked = playerChecked.getColor();
+    	Color colorChecking = playerChecking.getColor();
         return false;
     }
     
