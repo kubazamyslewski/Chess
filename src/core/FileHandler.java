@@ -10,6 +10,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -135,18 +136,36 @@ public class FileHandler {
      *
      * @return The list of moves representing the game history.
      */
-    public List<Move> loadGameFromFile() {
+    public Serializable loadGameFromFile(String serializeFileName) {
     	try {
-            FileInputStream fileIn = new FileInputStream("all_Moves.ser");
+            FileInputStream fileIn = new FileInputStream(foldername + "\\" + serializeFileName);
             ObjectInputStream in = new ObjectInputStream(fileIn);
-            List<Move> moves = (List<Move>) in.readObject();
             in.close();
             fileIn.close();
-            return moves;
+            return (Serializable) in.readObject();
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
-    	return new ArrayList<Move>();
+    	return (Serializable) new Object();
     }
+    
+//    /**
+//     * Loads game data from a file.
+//     *
+//     * @return The list of moves representing the game history.
+//     */
+//    public Serializable loadGameFromFile(String serializeFileName) {
+//    	try {
+//            FileInputStream fileIn = new FileInputStream(foldername + "\\" + serializeFileName);
+//            ObjectInputStream in = new ObjectInputStream(fileIn);
+//            List<Move> moves = (List<Move>) in.readObject();
+//            in.close();
+//            fileIn.close();
+//            return moves;
+//        } catch (IOException | ClassNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//    	return new ArrayList<Move>();
+//    }
 }
 

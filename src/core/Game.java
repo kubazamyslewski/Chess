@@ -53,6 +53,7 @@ public class Game extends GameLogic {
         playerFactory = null;
         
         saveGame();
+        loadGame();
         
     }
 
@@ -107,15 +108,25 @@ public class Game extends GameLogic {
         // Get the list of moves representing the game history or the state of the board
         // Call the saveGameToFile method using the fileHandler field
         fileHandler.saveGameToFile(allMoves, board, playerBlack, playerWhite, isWhitePlayerTurn, isEnPassant, whereEnPassant);
+        
+        fileHandler = null;
     }
 
 
-//    // Metoda wczytująca stan gry z pliku
-//    public void loadGame() {
-//        FileHandler fileHandler = null;
-//        List<Move> moves = fileHandler.loadGameFromFile();
-//        // Przywróć stan gry na podstawie wczytanych ruchów
-//    }
+    // Metoda wczytująca stan gry z pliku
+    public void loadGame() {
+    	Game game = new Game();
+    	FileHandler fileHandler = new FileHandler("zapis");
+    	board = (Chessboard) fileHandler.loadGameFromFile("board.ser");
+    	allMoves = (ArrayList<Move>) fileHandler.loadGameFromFile("allMoves.ser");
+    	playerWhite = (Player) fileHandler.loadGameFromFile("playerWhite.ser");
+    	playerBlack = (Player) fileHandler.loadGameFromFile("playerBlack.ser");
+    	isWhitePlayerTurn = (boolean) fileHandler.loadGameFromFile("isWhitePlayerTurn.ser");
+    	isEnPassant = (boolean) fileHandler.loadGameFromFile("isEnPassant.ser");
+    	whereEnPassant = (Square) fileHandler.loadGameFromFile("whereEnPassant.ser");
+        
+        fileHandler = null;
+    }
 
     
     public boolean isWhitePlayerTurn() {
