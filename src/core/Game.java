@@ -26,10 +26,31 @@ public class Game extends GameLogic {
     
     
     public Game(){
-        newGame();
-        setWhitePlayerTurn(true);
+        init();
+        
+        saveGame();
+        loadGame();
+        
+    }
+
+    /**
+     * for initializing all objects
+     */
+    protected final void init(){
+    	board = new Chessboard();
+    	board.setSquares();
+    	board.setPiecesAtStart(playerWhite, playerBlack);
+    	setWhitePlayerTurn(true);
         setIsEnPassant(false);
         
+    }
+    
+    
+    public static void main(String[] args) {
+    	Game game = new Game();
+    }
+    
+    public void newGame(){
         PlayerFactory playerFactory = new PlayerFactory();
         int type;
         String playername;
@@ -51,51 +72,6 @@ public class Game extends GameLogic {
         type = 0;
         playername = null;
         playerFactory = null;
-        
-        saveGame();
-        loadGame();
-        
-    }
-
-    /**
-     * for initializing all objects
-     */
-    protected final void init(){
-    	board = new Chessboard();
-    	board.setSquares();
-    	board.setPiecesAtStart(playerWhite, playerBlack);
-    }
-    
-    
-    public static void main(String[] args) {
-    	Game game = new Game();
-    }
-    
-    public void newGame(){
-    	init();
-    }
-    
-    public void endGame(){
-    	System.out.println("Thanks for playing");
-    }
-
-    public void moveNetworkAction(){
-
-    }
-    
-
-    /**
-     * Switches the current active player
-     */
-    public void switchActive(){
-    	isWhitePlayerTurn = !isWhitePlayerTurn;
-    }
-    
-    /**
-     * makes the lastest move in ArrayList
-     */
-    public void move(){
-
     }
 
 
@@ -128,6 +104,29 @@ public class Game extends GameLogic {
         fileHandler = null;
     }
 
+    
+    public void endGame(){
+    	System.out.println("Thanks for playing");
+    }
+
+    public void moveNetworkAction(){
+
+    }
+    
+
+    /**
+     * Switches the current active player
+     */
+    public void switchActive(){
+    	isWhitePlayerTurn = !isWhitePlayerTurn;
+    }
+    
+    /**
+     * makes the lastest move in ArrayList
+     */
+    public void move(){
+
+    }
     
     public boolean isWhitePlayerTurn() {
         return isWhitePlayerTurn;
