@@ -90,27 +90,12 @@ public class Game extends GameLogic {
     public void switchActive(){
     	isWhitePlayerTurn = !isWhitePlayerTurn;
     }
-
-    public Move getLastMove() {
-        if (!allMoves.isEmpty()) {
-            return allMoves.get(allMoves.size() - 1);
-        } else {
-            return null;
-        }
-    }
+    
     /**
      * makes the lastest move in ArrayList
      */
     public void move(){
 
-        if (allMoves.isEmpty()) {
-            System.out.println("No moves available.");
-            return;
-        }
-        Move lastMove = getLastMove();
-        Square startSquare = lastMove.getStartSquare();
-        Square endSquare = lastMove.getEndSquare();
-        board.makeMove(lastMove);
     }
 
 
