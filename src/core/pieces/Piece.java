@@ -33,4 +33,8 @@ public abstract class Piece implements Serializable{
     public void setPlayer(Player player) {
         this.player = player;
     }
+
+    public boolean getHasMoved() {
+        return false;
+    }
 }

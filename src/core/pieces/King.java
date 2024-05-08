@@ -10,6 +10,7 @@ public class King extends Piece {
     protected boolean hasMoved = false; //for castling
     public King(Player player) {
         super(player);
+        this.name = "King";
     }
     public boolean getHasMoved(){
         return hasMoved;
