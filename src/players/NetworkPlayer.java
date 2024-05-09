@@ -38,7 +38,7 @@ public class NetworkPlayer extends HumanPlayer {
      * @return the color of the network player's pieces
      */
     public Color getColor() {
-        return color;
+        return super.getColor();
     }
 
     /**
@@ -47,7 +47,7 @@ public class NetworkPlayer extends HumanPlayer {
      * @return the name of the network player
      */
     public String getName() {
-        return name;
+        return super.getName();
     }
 
     /**
