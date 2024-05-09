@@ -62,12 +62,12 @@ public class GameLogic {
      * @param squares
      * @return
      */
-    public static boolean isStalemate(Game game, Player playerChecked, Player playerChecking, Square[][] squares){
-    	if (!isTurnCompilantWithColor(game, playerChecked, playerChecking, squares) && !isCheck(playerChecked, playerChecking, squares)) {
+    public static boolean isStalemate(Game game, Player playerStalemated, Player playerUnhappy, Square[][] squares){
+    	if (isTurnCompilantWithColor(game, playerStalemated, playerUnhappy, squares) && !isCheck(playerStalemated, playerUnhappy, squares)) {
     		for (Square[] checkingRow : squares) {
         		for (Square checkingSquare: checkingRow) {
         			for (Move move : PieceBehaviour.whateverLegalMovesLookup(checkingSquare, squares)) {
-        				if (move != null) {
+        				if ((move != null) && (move.getStartSquare().getPiece().getPlayer() == playerStalemated)) {
         					return false;
         				}
         				else return true; 
