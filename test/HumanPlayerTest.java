@@ -1,25 +1,26 @@
-package players;
-
 import core.Chessboard;
+import core.Square;
+import core.pieces.Pawn;
 import core.pieces.Piece;
 import core.pieces.Queen;
 import enums.Color;
 import enums.PlayerType;
 import org.junit.jupiter.api.Test;
+import players.HumanPlayer;
+import players.Player;
 
 import static enums.Color.BLACK;
 import static enums.Color.WHITE;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class NetworkPlayerTest {
+public class HumanPlayerTest {
 
     @Test
     public void testConstructorWithNameAndColor() {
-
         String expectedName = "Alice";
-        Color expectedColor = WHITE;
+        Color expectedColor = Color.WHITE;
 
-        NetworkPlayer player = new NetworkPlayer(expectedName, expectedColor);
+        HumanPlayer player = new HumanPlayer(expectedName, expectedColor);
 
         assertEquals(expectedName, player.getName());
         assertEquals(expectedColor, player.getColor());
@@ -29,8 +30,7 @@ public class NetworkPlayerTest {
     public void testGetName() {
 
         String expectedName = "Bob";
-        Color expectedColor = WHITE;
-        NetworkPlayer player = new NetworkPlayer(expectedName, expectedColor);
+        HumanPlayer player = new HumanPlayer();
         player.setName(expectedName);
 
         String actualName = player.getName();
@@ -40,9 +40,8 @@ public class NetworkPlayerTest {
 
     @Test
     public void testGetColor() {
-
         Color expectedColor = Color.BLACK;
-        NetworkPlayer player = new NetworkPlayer("Carol", expectedColor);
+        HumanPlayer player = new HumanPlayer("Carol", expectedColor);
 
         Color actualColor = player.getColor();
 
@@ -52,7 +51,7 @@ public class NetworkPlayerTest {
     @Test
     public void testGetPlayerType() {
 
-        NetworkPlayer player = new NetworkPlayer();
+        HumanPlayer player = new HumanPlayer();
 
         PlayerType playerType = player.getPlayerType();
 
@@ -62,7 +61,7 @@ public class NetworkPlayerTest {
     @Test
     public void testIsGoDown() {
 
-        NetworkPlayer player = new NetworkPlayer();
+        HumanPlayer player = new HumanPlayer();
 
         boolean isGoDown = player.isGoDown();
 
@@ -71,11 +70,16 @@ public class NetworkPlayerTest {
 
     @Test
     public void testGetPromotionPiece() {
-        Player playerWhite = new NetworkPlayer("Jack", WHITE);
-        Player playerBlack = new NetworkPlayer("Anna", BLACK);
+        Player playerWhite = new HumanPlayer("Jack", WHITE);
+        Player playerBlack = new HumanPlayer("Anna", BLACK);
         Chessboard chessboard = new Chessboard();
         chessboard.setSquares();
         chessboard.setPiecesAtStart(playerWhite, playerBlack);
+        for (int x=0; x<8; x++) {
+    		for (int y=0; y<8; y++) {
+    			chessboard.getSquares()[x][y] = new Square(x, y, new Pawn(playerWhite));
+    		}
+    	}
 
         Piece promotionPiece = playerWhite.getPromotionPiece(chessboard, playerWhite, "queen");
 

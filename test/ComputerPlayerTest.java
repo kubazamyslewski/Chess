@@ -1,11 +1,13 @@
-package players;
-
 import core.Chessboard;
+import core.Square;
+import core.pieces.Pawn;
 import core.pieces.Piece;
 import core.pieces.Queen;
 import enums.Color;
 import enums.PlayerType;
 import org.junit.jupiter.api.Test;
+import players.ComputerPlayer;
+import players.Player;
 
 import static enums.Color.BLACK;
 import static enums.Color.WHITE;
@@ -74,6 +76,11 @@ public class ComputerPlayerTest {
         Chessboard chessboard = new Chessboard();
         chessboard.setSquares();
         chessboard.setPiecesAtStart(playerWhite, playerBlack);
+        for (int x=0; x<8; x++) {
+    		for (int y=0; y<8; y++) {
+    			chessboard.getSquares()[x][y] = new Square(x, y, new Pawn(playerWhite));
+    		}
+    	}
 
         Piece promotionPiece = playerWhite.getPromotionPiece(chessboard, playerWhite, "queen");
 

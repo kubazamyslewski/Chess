@@ -50,7 +50,7 @@ public class GameLogic {
      */
     public static boolean isCheckmate(Game game, Player playerChecked, Player playerChecking, Square[][] squares){
     	// Jeśli jest tak, że jest szach i nie jest aktualnie ruch gracza który jest szachowany to jest mat
-    	if (!isTurnCompilantWithColor(game, playerChecked, playerChecking, squares) && isCheck(game, playerChecked, playerChecking, squares)) {
+    	if (!isTurnCompilantWithColor(game, playerChecked, playerChecking, squares) && isCheck(playerChecked, playerChecking, squares)) {
     		return true;
     	}
         return false;
@@ -79,7 +79,7 @@ public class GameLogic {
     		for (Square checkingSquare: checkingRow) {
     			Piece checkingPiece = checkingSquare.getPiece();
     			for (Move move : PieceBehaviour.whateverLegalMovesLookup(checkingSquare, squares)) {
-    				if (move.getEndSquare().getPiece().getName() == "King") {
+    				if ((move.getEndSquare().getPiece().getName() == "King") && (move.getEndSquare().getPiece().getPlayer() == playerChecked) && (move.getStartSquare().getPiece().getPlayer() == playerChecking)) {
     					return true;
     				}
     			}

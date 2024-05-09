@@ -2,22 +2,17 @@ package networking;
 
 import core.Move;
 
+import java.io.IOException;
+
 public class Table {
     private Service clientPlayerWhite;
     private Service clientPlayerBlack;
+    private int playerCounter = 0;
     private String password;
+    private boolean isAllPlayers = false;
 
-    Table(String password){
-
-    }
-
-    /**
-     *  Method for sending move to the other player
-     * @param sender : who is sending the move
-     * @param promoted : if promoted to what piece, else null
-     */
-    public void sendMoveToOther(Service sender, Move move, String promoted){
-
+    public Table(String password){
+        this.password = password;
     }
 
     /**
@@ -25,7 +20,7 @@ public class Table {
      * @return true if there are 2 players, else false
      */
     public boolean isAllPlayers(){
-        return false;
+        return isAllPlayers;
     }
 
     /**
@@ -33,14 +28,23 @@ public class Table {
      * @param client : client that wants to join the table
      */
     public void addPlayer(Service client){
+        switch (playerCounter){
+            case 0:
+                clientPlayerWhite = client;
+            case 1:
+                clientPlayerBlack = client;
+                isAllPlayers = true;
+            default:
+                System.out.println("Table is full");
 
+        }
     }
 
     public void setPassword(String password){
-
+        this.password = password;
     }
     public String getPassword(){
-        return null;
+        return password;
     }
 
 

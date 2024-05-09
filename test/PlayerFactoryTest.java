@@ -1,8 +1,9 @@
-package players;
-
 import enums.Color;
 import enums.PlayerType;
 import org.junit.Test;
+import players.Player;
+import players.PlayerFactory;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class PlayerFactoryTest {
