@@ -100,7 +100,42 @@ public class GameLogic {
     	}
         return false;
     }
-    
+
+    public static boolean isMoveCausingCheck(Move move, Square[][] squares) {
+        Square startSquare = move.getStartSquare();
+        Square endSquare = move.getEndSquare();
+        Piece movingPiece = startSquare.getPiece();
+        Piece tempPiece = endSquare.getPiece();
+
+        // Perform the move
+        endSquare.setPiece(movingPiece);
+        startSquare.setPiece(null);
+
+        // Check if the player's own king is in check after the move
+        boolean causingCheck = isCheck(movingPiece.getPlayer(), movingPiece.getPlayer(), squares);
+
+        // Undo the move
+        startSquare.setPiece(movingPiece);
+        endSquare.setPiece(tempPiece);
+
+        return causingCheck;
+    }
+
+
+    public static Square findKingSquare(Square[][] squares, String color) {
+        for (int i = 0; i < squares.length; i++) {
+            for (int j = 0; j < squares[i].length; j++) {
+                Square square = squares[i][j];
+                if (square.getPiece() != null &&
+                        square.getPiece().getName().equals("King") &&
+                        square.getPiece().getColor().equals(color)) {
+                    return square;
+                }
+            }
+        }
+        return null;
+    }
+
     /**
      * Checks if latest move is en Passant and if it is a legal move
      * if no function return false
