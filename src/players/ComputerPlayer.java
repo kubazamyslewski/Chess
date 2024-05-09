@@ -20,7 +20,7 @@ public class ComputerPlayer implements Player {
     /**
      * Constructor with default values
      */
-    ComputerPlayer() {}
+    public ComputerPlayer() {}
 
     /**
      * Constructs a new ComputerPlayer with the specified name and color.
@@ -28,7 +28,7 @@ public class ComputerPlayer implements Player {
      * @param name  the name of the computer player
      * @param color the color of the computer player's pieces (WHITE or BLACK)
      */
-    ComputerPlayer(String name, Color color) {
+    public ComputerPlayer(String name, Color color) {
         this.name = name;
         this.color = color;
     }

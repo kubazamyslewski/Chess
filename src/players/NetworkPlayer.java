@@ -20,7 +20,7 @@ public class NetworkPlayer extends HumanPlayer {
     /**
      * Constructs a new NetworkPlayer with default values.
      */
-    NetworkPlayer() {}
+    public NetworkPlayer() {}
 
     /**
      * Constructs a new NetworkPlayer with the specified name and color.
@@ -28,7 +28,7 @@ public class NetworkPlayer extends HumanPlayer {
      * @param name  the name of the network player
      * @param color the color of the network player's pieces
      */
-    NetworkPlayer(String name, Color color) {
+    public NetworkPlayer(String name, Color color) {
         super(name, color);
     }
 

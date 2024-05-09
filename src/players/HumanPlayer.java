@@ -21,7 +21,7 @@ public class HumanPlayer implements Player {
     /**
      * Constructs a new {@code HumanPlayer} with default values.
      */
-    HumanPlayer() {}
+    public HumanPlayer() {}
 
     /**
      * Constructs a new {@code HumanPlayer} with the specified name and color.
@@ -29,7 +29,7 @@ public class HumanPlayer implements Player {
      * @param name  the name of the human player
      * @param color the color of the human player's pieces
      */
-    HumanPlayer(String name, Color color) {
+    public HumanPlayer(String name, Color color) {
         this.name = name;
         this.color = color;
     }

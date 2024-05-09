@@ -1,3 +1,5 @@
+package players;
+
 import enums.Color;
 import enums.PlayerType;
 import org.junit.Test;
