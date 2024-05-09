@@ -57,12 +57,24 @@ public class GameLogic {
     }
 
     /**
-     * Checks if there is a stealmate
+     * Checks if there is a stalemate
      * @param player
      * @param squares
      * @return
      */
-    public static boolean isStealmate(Game game, Player player, Square[][] squares){
+    public static boolean isStalemate(Game game, Player playerChecked, Player playerChecking, Square[][] squares){
+    	if (!isTurnCompilantWithColor(game, playerChecked, playerChecking, squares) && !isCheck(playerChecked, playerChecking, squares)) {
+    		for (Square[] checkingRow : squares) {
+        		for (Square checkingSquare: checkingRow) {
+        			for (Move move : PieceBehaviour.whateverLegalMovesLookup(checkingSquare, squares)) {
+        				if (move != null) {
+        					return false;
+        				}
+        				else return true; 
+        			}
+        		}
+        	}
+    	}
         return false;
     }
 
@@ -73,11 +85,11 @@ public class GameLogic {
      * @return
      */
     public static boolean isCheck(Player playerChecked, Player playerChecking, Square[][] squares){
-    	Color colorChecked = playerChecked.getColor();
-    	Color colorChecking = playerChecking.getColor();
+//    	Color colorChecked = playerChecked.getColor();
+// colorChecking = playerChecking.getColor();
     	for (Square[] checkingRow : squares) {
     		for (Square checkingSquare: checkingRow) {
-    			Piece checkingPiece = checkingSquare.getPiece();
+//    			Piece checkingPiece = checkingSquare.getPiece();
     			for (Move move : PieceBehaviour.whateverLegalMovesLookup(checkingSquare, squares)) {
     				if ((move.getEndSquare().getPiece().getName() == "King") && (move.getEndSquare().getPiece().getPlayer() == playerChecked) && (move.getStartSquare().getPiece().getPlayer() == playerChecking)) {
     					return true;
