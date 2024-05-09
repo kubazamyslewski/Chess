@@ -1,10 +1,13 @@
 package core;
 
+import core.pieces.Piece;
 import players.Player;
 
 import java.awt.*;
 import java.util.ArrayList;
 
+import core.pieces.King;
+import core.pieces.Piece;
 import enums.Color;
 
 /**
@@ -72,6 +75,17 @@ public class GameLogic {
     public static boolean isCheck(Game game, Player playerChecked, Player playerChecking, Square[][] squares){
     	Color colorChecked = playerChecked.getColor();
     	Color colorChecking = playerChecking.getColor();
+    	for (Square[] checkingRow : squares) {
+    		for (Square checkingSquare: checkingRow) {
+    			Piece checkingPiece = checkingSquare.getPiece();
+    			for (Move move : PieceBehaviour.whateverLegalMovesLookup(checkingSquare, squares)) {
+    				if (move.getEndSquare().getPiece().getName() == "King") {
+    					return true;
+    				}
+    			}
+    		}
+    		
+    	}
         return false;
     }
     
@@ -100,14 +114,51 @@ public class GameLogic {
      * @param squares
      * @return
      */
-    public static boolean isMoveLegal(Move move, Square[][] squares){
-        //Might be a good idea to split it into more methods/classes depending on the algorithms and approach
-        //switch(move.getStartSquare().getPiece().getName()){ i think it is good to use switch case for this }
-        //the switch might be implemented in a function inside PieceBehavior not here
-        Move[] legalMoves = PieceBehaviour.kingLegalMoves(move.getStartSquare(),squares); //example if it is a king
-        //there is a need for mechanism to check if move is in legalMoves depending on solution you can have squares implement comparable or check by coordinates
+    public static boolean isMoveLegal(Move move, Square[][] squares) {
+        if (move == null || squares == null) {
+            return false;
+        }
+
+        Square startSquare = move.getStartSquare();
+        if (startSquare == null || startSquare.getPiece() == null) {
+            return false; // No piece on the start square means no move possible
+        }
+
+        Piece movingPiece = startSquare.getPiece();
+        Move[] legalMoves;
+
+        switch (movingPiece.getName()) {
+            case "King":
+                legalMoves = PieceBehaviour.kingLegalMoves(startSquare, squares);
+                break;
+            case "Queen":
+                legalMoves = PieceBehaviour.queenLegalMoves(startSquare, squares);
+                break;
+            case "Rook":
+                legalMoves = PieceBehaviour.rookLegalMoves(startSquare, squares);
+                break;
+            case "Bishop":
+                legalMoves = PieceBehaviour.bishopLegalMoves(startSquare, squares);
+                break;
+            case "Knight":
+                legalMoves = PieceBehaviour.knightLegalMoves(startSquare, squares);
+                break;
+            case "Pawn":
+                legalMoves = PieceBehaviour.pawnLegalMoves(startSquare, squares);
+                break;
+            default:
+                return false;
+        }
+
+        for (Move legalMove : legalMoves) {
+            if (legalMove != null && legalMove.equals(move)) {
+                return true;
+            }
+        }
+
         return false;
     }
+
 
     /**
      * Checks whether a Pawn can be promoted

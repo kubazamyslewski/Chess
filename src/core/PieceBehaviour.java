@@ -1,8 +1,44 @@
 package core;
 
 import core.pieces.Piece;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class PieceBehaviour {
+	
+	public static Move[] whateverLegalMovesLookup(Square checkedSquare, Square[][] squares) {
+		
+		if (pawnLegalMoves(checkedSquare, squares) != null) {
+			return pawnLegalMoves(checkedSquare, squares);
+		}
+		
+		if (knightLegalMoves(checkedSquare, squares) != null) {
+			return knightLegalMoves(checkedSquare, squares);
+		}
+		
+		if (bishopLegalMoves(checkedSquare, squares) != null) {
+			return bishopLegalMoves(checkedSquare, squares);
+		}
+		
+		if (rookLegalMoves(checkedSquare, squares) != null) {
+			return rookLegalMoves(checkedSquare, squares);
+		}
+		
+		if (bishopLegalMoves(checkedSquare, squares) != null) {
+			return bishopLegalMoves(checkedSquare, squares);
+		}
+		
+		if (queenLegalMoves(checkedSquare, squares) != null) {
+			return queenLegalMoves(checkedSquare, squares);
+		}
+		
+		if (kingLegalMoves(checkedSquare, squares) != null) {
+			return kingLegalMoves(checkedSquare, squares);
+		}
+		return null;
+		
+	}
 
     public static Move[] kingLegalMoves(Square checkedSquare, Square[][] squares) {
         Piece piece = checkedSquare.getPiece();
@@ -232,37 +268,36 @@ public class PieceBehaviour {
         return legalMoves;
     }
 
-    public static Move[] passantLegalMoves(Square checkedSquare, Square[][] squares, Move lastMove) {
+    public static List<Move> passantLegalMoves(Square checkedSquare, Square[][] squares, Move lastMove) {
         Piece piece = checkedSquare.getPiece();
-        if (piece == null || !piece.getName().equals("Passant")) {
-            return null;
+        if (piece == null || !piece.getName().equals("Pawn")) {  // Check for pawn specifically
+            return Collections.emptyList();
         }
 
+        List<Move> legalMoves = new ArrayList<>();
         int x = checkedSquare.getX();
         int y = checkedSquare.getY();
-        Move[] legalMoves = new Move[4]; // Maksymalnie cztery możliwe ruchy dla en passant
-        int count = 0;
 
-        // Sprawdź czy ostatni ruch istnieje
-        if (lastMove != null) {
+        if (lastMove != null && lastMove.getStartSquare().getPiece() != null &&
+                lastMove.getStartSquare().getPiece().getName().equals("Pawn")) {
             Square startSquare = lastMove.getStartSquare();
             Square endSquare = lastMove.getEndSquare();
 
-            // Sprawdź czy przeciwny pionek przeszedł dwa pola do przodu
+            // Check if the last move was a two-square pawn advance
             if (Math.abs(startSquare.getX() - endSquare.getX()) == 2) {
-                // Sprawdź czy pionek znajduje się na odpowiedniej linii do wykonania ruchu en passant
-                if (endSquare.getY() == y - 1 || endSquare.getY() == y + 1) {
-                    // Sprawdź czy na polu docelowym ruchu znajduje się pionek przeciwnika
-                    Piece opponentPawn = squares[endSquare.getX()][endSquare.getY()].getPiece();
-                    if (opponentPawn != null && opponentPawn.getPlayer() != piece.getPlayer()) {
-                        // Jeśli wszystkie warunki są spełnione, dodaj ruch en passant
-                        legalMoves[count] = new Move(checkedSquare, endSquare);
-                        count++;
+                // Check if the pawn is in the correct position to perform en passant
+                if ((endSquare.getY() == y + 1 || endSquare.getY() == y - 1) && endSquare.getX() == x) {
+                    // Target square is beside the pawn and behind the moved pawn
+                    int targetX = x + (piece.getPlayer().isGoDown() ? 1 : -1); // Adjust for pawn direction
+                    if (targetX >= 0 && targetX < squares.length) {
+                        legalMoves.add(new Move(checkedSquare, squares[targetX][endSquare.getY()]));
                     }
                 }
             }
         }
+
         return legalMoves;
     }
+
 }
 
