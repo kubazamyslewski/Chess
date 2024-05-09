@@ -35,7 +35,7 @@ public class Game extends GameLogic {
 
     public Game(){
         init();
-        client = new Client();
+        client = null;
         saveGame();
         loadGame();
 
@@ -120,7 +120,7 @@ public class Game extends GameLogic {
     /**
      * This method handles network actions for moves.
      */
-    public void moveNetworkAction() {
+    public void moveNetworkAction(Move m) {
 
     }
 

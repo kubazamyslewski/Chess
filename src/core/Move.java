@@ -2,12 +2,14 @@ package core;
 
 import core.pieces.Piece;
 
+import java.io.Serializable;
+
 /**
  *  This class carries an information on from what to what square player wants to move
  *  Later if the move is promotion change the promotion boolean to true
  *  then also it can be given a promotion piece
  */
-public class Move {
+public class Move implements Serializable {
     private Square startSquare;
     private Square endSquare;
 

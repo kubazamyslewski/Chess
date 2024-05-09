@@ -1,11 +1,11 @@
-package players;
-
 import core.Chessboard;
 import core.pieces.Piece;
 import core.pieces.Queen;
 import enums.Color;
 import enums.PlayerType;
 import org.junit.jupiter.api.Test;
+import players.HumanPlayer;
+import players.Player;
 
 import static enums.Color.BLACK;
 import static enums.Color.WHITE;
