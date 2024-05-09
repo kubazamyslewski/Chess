@@ -8,17 +8,17 @@ import core.pieces.Piece;
  *  then also it can be given a promotion piece
  */
 public class Move {
-     private Square startSquare;
-     private Square endSquare;
+    private Square startSquare;
+    private Square endSquare;
 
-     private boolean promotion = false;
+    private boolean promotion = false;
 
-     private Piece promotionPiece;
+    private Piece promotionPiece;
 
-     public Move(Square startSquare, Square endSquare){
-         this.startSquare = startSquare;
-         this.endSquare = endSquare;
-     }
+    public Move(Square startSquare, Square endSquare){
+        this.startSquare = startSquare;
+        this.endSquare = endSquare;
+    }
 
     public void setEndSquare(Square endSquare) {
         this.endSquare = endSquare;

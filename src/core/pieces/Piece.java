@@ -37,4 +37,7 @@ public abstract class Piece implements Serializable{
     public boolean getHasMoved() {
         return false;
     }
+
+    public void setHasMoved(boolean b) {
+    }
 }

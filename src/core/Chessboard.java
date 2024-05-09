@@ -24,6 +24,12 @@ public class Chessboard implements Serializable{
     		}
     	}
     }
+	public Square getSquare(int x, int y) {
+		if (x >= 0 && x < squares.length && y >= 0 && y < squares[0].length) {
+			return squares[x][y];
+		}
+		return null; //
+	}
     
     /**
      * Incializes all squares on the board assigns right player for every piece
