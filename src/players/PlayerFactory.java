@@ -14,5 +14,16 @@ public class PlayerFactory {
      * @return a new instance of the specified player type
      *
      */
-    public static Player createPlayer(PlayerType playerType, String name, Color color) { return null;}
+    public static Player createPlayer(PlayerType playerType, String name, Color color) {
+        switch (playerType) {
+            case HUMAN:
+                return new HumanPlayer(name, color);
+            case COMPUTER:
+                return new ComputerPlayer(name, color);
+            case NETWORK_USER:
+                return new NetworkPlayer(name, color);
+            default:
+                return null;
+        }
+    }
 }

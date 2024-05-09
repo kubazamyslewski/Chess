@@ -70,5 +70,5 @@ public interface Player extends Serializable {
      * @param chessboard the current state of the chessboard
      * @return returns which piece is chosen
      */
-    public Piece getPromotionPiece(Chessboard chessboard);
+    public Piece getPromotionPiece(Chessboard chessboard, Player player, String promotionPieceType);
 }

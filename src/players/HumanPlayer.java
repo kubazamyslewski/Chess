@@ -1,7 +1,9 @@
 package players;
 
 import core.Chessboard;
+import core.Square;
 import core.pieces.Piece;
+import core.pieces.*;
 import enums.Color;
 import enums.PlayerType;
 
@@ -27,7 +29,10 @@ public class HumanPlayer implements Player {
      * @param name  the name of the human player
      * @param color the color of the human player's pieces
      */
-    HumanPlayer(String name, Color color) {}
+    HumanPlayer(String name, Color color) {
+        this.name = name;
+        this.color = color;
+    }
 
     /**
      * Retrieves the color associated with this human player.
@@ -62,7 +67,7 @@ public class HumanPlayer implements Player {
      * @return {@code false} since a human player's direction is not applicable
      */
     public boolean isGoDown() {
-        return false;
+        return goDown;
     }
 
     /**
@@ -70,7 +75,9 @@ public class HumanPlayer implements Player {
      *
      * @param goDown the direction flag (ignored for human players)
      */
-    public void setGoDown(boolean goDown) {}
+    public void setGoDown(boolean goDown) {
+        this.goDown=goDown;
+    }
 
     /**
      * Sets the name of the human player.
@@ -92,12 +99,42 @@ public class HumanPlayer implements Player {
 
     /**
      * Retrieves the piece chosen for promotion by the human player.
-     * This method always returns {@code null} since human players don't choose promotion pieces.
-     *
-     * @param chessboard the current state of the chessboard (not used for human players)
+     * @param chessboard the current state of the chessboard
      * @return returns which piece is chosen
      */
-    public Piece getPromotionPiece(Chessboard chessboard) {
+    public Piece getPromotionPiece(Chessboard chessboard, Player player, String promotionPieceType) {
+        for (int i = 0; i < chessboard.getSquares().length; i++) {
+            for (int j = 0; j < chessboard.getSquares()[i].length; j++) {
+                Square square = chessboard.getSquares()[i][j];
+                Piece piece = square.getPiece();
+                if (piece instanceof Pawn && piece.getPlayer() == player && i == 7) {
+                    square.setPiece(null);
+
+                    Piece promotionPiece = null;
+                    switch (promotionPieceType.toLowerCase()) {
+                        case "queen":
+                            promotionPiece = new Queen(player);
+                            break;
+                        case "rook":
+                            promotionPiece = new Rook(player);
+                            break;
+                        case "bishop":
+                            promotionPiece = new Bishop(player);
+                            break;
+                        case "knight":
+                            promotionPiece = new Knight(player);
+                            break;
+                        default:
+
+                            promotionPiece = new Queen(player);
+                            break;
+                    }
+
+                    square.setPiece(promotionPiece);
+                    return promotionPiece;
+                }
+            }
+        }
         return null;
     }
 }
