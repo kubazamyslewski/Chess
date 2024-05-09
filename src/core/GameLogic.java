@@ -5,6 +5,8 @@ import players.Player;
 import java.awt.*;
 import java.util.ArrayList;
 
+import core.pieces.King;
+import core.pieces.Piece;
 import enums.Color;
 
 /**
@@ -72,6 +74,17 @@ public class GameLogic {
     public static boolean isCheck(Game game, Player playerChecked, Player playerChecking, Square[][] squares){
     	Color colorChecked = playerChecked.getColor();
     	Color colorChecking = playerChecking.getColor();
+    	for (Square[] checkingRow : squares) {
+    		for (Square checkingSquare: checkingRow) {
+    			Piece checkingPiece = checkingSquare.getPiece();
+    			for (Move move : PieceBehaviour.whateverLegalMovesLookup(checkingSquare, squares)) {
+    				if (move.getEndSquare().getPiece().getName() == "King") {
+    					return true;
+    				}
+    			}
+    		}
+    		
+    	}
         return false;
     }
     

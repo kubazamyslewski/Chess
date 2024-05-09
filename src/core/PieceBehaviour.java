@@ -3,6 +3,39 @@ package core;
 import core.pieces.Piece;
 
 public class PieceBehaviour {
+	
+	public static Move[] whateverLegalMovesLookup(Square checkedSquare, Square[][] squares) {
+		
+		if (pawnLegalMoves(checkedSquare, squares) != null) {
+			return pawnLegalMoves(checkedSquare, squares);
+		}
+		
+		if (knightLegalMoves(checkedSquare, squares) != null) {
+			return knightLegalMoves(checkedSquare, squares);
+		}
+		
+		if (bishopLegalMoves(checkedSquare, squares) != null) {
+			return bishopLegalMoves(checkedSquare, squares);
+		}
+		
+		if (rookLegalMoves(checkedSquare, squares) != null) {
+			return rookLegalMoves(checkedSquare, squares);
+		}
+		
+		if (bishopLegalMoves(checkedSquare, squares) != null) {
+			return bishopLegalMoves(checkedSquare, squares);
+		}
+		
+		if (queenLegalMoves(checkedSquare, squares) != null) {
+			return queenLegalMoves(checkedSquare, squares);
+		}
+		
+		if (kingLegalMoves(checkedSquare, squares) != null) {
+			return kingLegalMoves(checkedSquare, squares);
+		}
+		return null;
+		
+	}
 
     public static Move[] kingLegalMoves(Square checkedSquare, Square[][] squares) {
         Piece piece = checkedSquare.getPiece();
