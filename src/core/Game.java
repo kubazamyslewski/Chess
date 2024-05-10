@@ -120,7 +120,7 @@ public class Game extends GameLogic {
     /**
      * This method handles network actions for moves.
      */
-    public void moveNetworkAction() {
+    public void moveNetworkAction(Move m) {
         try {
 
             if ((isWhitePlayerTurn() && playerWhite instanceof NetworkPlayer) ||

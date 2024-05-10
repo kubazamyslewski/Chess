@@ -68,7 +68,7 @@ public class Client implements Runnable{
                 while(true){
                     Move toPlay = (Move) moveInput.readObject();
                     if(toPlay != null){
-                        game.moveNetworkAction();
+                        game.moveNetworkAction(toPlay);
                     }
                     Move toSend = receiveMove();
                     if(receiveMove() != null){
@@ -86,7 +86,7 @@ public class Client implements Runnable{
      * method for handling moves sent by the other player
      */
     private void handleNewMoveFromServer(Move move){
-        game.moveNetworkAction();
+        game.moveNetworkAction(move);
     }
 
     /**
