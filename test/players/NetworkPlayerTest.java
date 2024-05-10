@@ -60,7 +60,7 @@ public class NetworkPlayerTest {
 
         PlayerType playerType = player.getPlayerType();
 
-        assertEquals(PlayerType.HUMAN, playerType);
+        assertEquals(PlayerType.NETWORK_USER, playerType);
     }
 
     @Test
