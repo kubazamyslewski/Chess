@@ -11,7 +11,7 @@ import enums.PlayerType;
  * It extends the HumanPlayer class and inherits its functionality.
  * This class can be used to handle player interactions in a networked environment.
  */
-public class NetworkPlayer extends HumanPlayer {
+public class NetworkPlayer implements Player {
     String name;
     Color color;
     PlayerType playerType;
@@ -29,7 +29,8 @@ public class NetworkPlayer extends HumanPlayer {
      * @param color the color of the network player's pieces
      */
     public NetworkPlayer(String name, Color color) {
-        super(name, color);
+    	this.name = name;
+        this.color = color;
     }
 
     /**
@@ -38,7 +39,7 @@ public class NetworkPlayer extends HumanPlayer {
      * @return the color of the network player's pieces
      */
     public Color getColor() {
-        return super.getColor();
+        return color;
     }
 
     /**
@@ -47,7 +48,7 @@ public class NetworkPlayer extends HumanPlayer {
      * @return the name of the network player
      */
     public String getName() {
-        return super.getName();
+        return name;
     }
 
     /**

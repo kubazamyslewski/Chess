@@ -36,8 +36,8 @@ public class Game extends GameLogic {
     public Game(){
         init();
         client = null;
+        newGame();
         saveGame();
-        loadGame();
 
     }
 
@@ -47,6 +47,8 @@ public class Game extends GameLogic {
     protected final void init(){
         board = new Chessboard();
         board.setSquares();
+        playerWhite = PlayerFactory.createPlayer(PlayerType.getPlayerType(0), "1", Color.WHITE);
+        playerBlack = PlayerFactory.createPlayer(PlayerType.getPlayerType(0), "2", Color.BLACK);
         board.setPiecesAtStart(playerWhite, playerBlack);
         setWhitePlayerTurn(true);
         setIsEnPassant(false);
@@ -59,7 +61,6 @@ public class Game extends GameLogic {
     }
 
     public void newGame(){
-        PlayerFactory playerFactory = new PlayerFactory();
         int type;
         String playername;
         System.out.println("Konfiguracja białego gracza");
@@ -68,7 +69,7 @@ public class Game extends GameLogic {
         systemin.nextLine();
         System.out.println("Podaj nazwę gracza");
         playername = systemin.nextLine();
-        playerWhite = playerFactory.createPlayer(PlayerType.getPlayerType(type), playername, Color.WHITE);
+        playerWhite = PlayerFactory.createPlayer(PlayerType.getPlayerType(type), playername, Color.WHITE);
         System.out.println();
         System.out.println("Konfiguracja czarnego gracza");
         System.out.println("Podaj typ czarnego gracza. Do wyboru:\n 0 - człowiek\n 1 - człowiek internetowy\n 2 - komputer");
@@ -76,10 +77,9 @@ public class Game extends GameLogic {
         systemin.nextLine();
         System.out.println("Podaj nazwę gracza");
         playername = systemin.nextLine();
-        playerBlack = playerFactory.createPlayer(PlayerType.getPlayerType(type), playername, Color.BLACK);
+        playerBlack = PlayerFactory.createPlayer(PlayerType.getPlayerType(type), playername, Color.BLACK);
         type = 0;
         playername = null;
-        playerFactory = null;
     }
 
 
@@ -108,6 +108,7 @@ public class Game extends GameLogic {
         isWhitePlayerTurn = (boolean) fileHandler.loadGameFromFile("isWhitePlayerTurn.ser");
         isEnPassant = (boolean) fileHandler.loadGameFromFile("isEnPassant.ser");
         whereEnPassant = (Square) fileHandler.loadGameFromFile("whereEnPassant.ser");
+        System.out.println("JIODASDAIOS");
 
         fileHandler = null;
     }
