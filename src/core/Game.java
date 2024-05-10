@@ -47,9 +47,9 @@ public class Game extends GameLogic {
     protected final void init(){
         board = new Chessboard();
         board.setSquares();
-        playerWhite = PlayerFactory.createPlayer(PlayerType.getPlayerType(0), "1", Color.WHITE);
-        playerBlack = PlayerFactory.createPlayer(PlayerType.getPlayerType(0), "2", Color.BLACK);
-        board.setPiecesAtStart(playerWhite, playerBlack);
+//        playerWhite = PlayerFactory.createPlayer(PlayerType.getPlayerType(0), "1", Color.WHITE);
+//        playerBlack = PlayerFactory.createPlayer(PlayerType.getPlayerType(0), "2", Color.BLACK);
+
         setWhitePlayerTurn(true);
         setIsEnPassant(false);
 
@@ -78,6 +78,8 @@ public class Game extends GameLogic {
         System.out.println("Podaj nazwę gracza");
         playername = systemin.nextLine();
         playerBlack = PlayerFactory.createPlayer(PlayerType.getPlayerType(type), playername, Color.BLACK);
+        
+        board.setPiecesAtStart(playerWhite, playerBlack);
         type = 0;
         playername = null;
     }
