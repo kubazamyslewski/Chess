@@ -4,6 +4,9 @@ import core.Move;
 
 import java.io.IOException;
 
+/**
+ * Class representing game on a server.
+ */
 public class Table {
     private Service clientPlayerWhite;
     private Service clientPlayerBlack;

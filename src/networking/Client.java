@@ -10,9 +10,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Connects client's socket to game server, handles messages sent by server.
+ */
 public class Client implements Runnable{
-
-    protected Socket socket;
     protected PrintWriter output;
     protected BufferedReader input;
     protected Game game;
@@ -67,7 +68,7 @@ public class Client implements Runnable{
                 while(true){
                     Move toPlay = (Move) moveInput.readObject();
                     if(toPlay != null){
-                        game.moveNetworkAction(toPlay);
+                        game.moveNetworkAction();
                     }
                     Move toSend = receiveMove();
                     if(receiveMove() != null){
@@ -85,7 +86,7 @@ public class Client implements Runnable{
      * method for handling moves sent by the other player
      */
     private void handleNewMoveFromServer(Move move){
-        game.moveNetworkAction(move);
+        game.moveNetworkAction();
     }
 
     /**
@@ -114,10 +115,6 @@ public class Client implements Runnable{
         return new Move(null,null);
     }
 
-    public Socket getSocket() {
-        return socket;
-    }
-
     public PrintWriter getOutput() {
         return output;
     }
@@ -126,15 +123,17 @@ public class Client implements Runnable{
         return input;
     }
 
-    public void setSocket(Socket socket) {
-        this.socket = socket;
-    }
-
     public void setOutput(PrintWriter output) {
         this.output = output;
     }
 
     public void setInput(BufferedReader input) {
         this.input = input;
+    }
+    public ObjectOutputStream getMoveOutput(){
+        return moveOutput;
+    }
+    public ObjectInputStream getMoveInput(){
+        return moveInput;
     }
 }

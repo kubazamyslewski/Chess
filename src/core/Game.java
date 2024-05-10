@@ -120,24 +120,24 @@ public class Game extends GameLogic {
     /**
      * This method handles network actions for moves.
      */
-//    public void moveNetworkAction() {
-//        try {
-//
-//            if ((isWhitePlayerTurn() && playerWhite instanceof NetworkPlayer) ||
-//                    (!isWhitePlayerTurn() && playerBlack instanceof NetworkPlayer)) {
-//
-//                Move move = (Move) moveInput.readObject();
-//                if (move != null) {
-//                    executeMove(move);
-//                    switchActive();
-//                    client.moveOutput().writeObject("Move received");
-//                }
-//            }
-//        } catch (IOException | ClassNotFoundException e) {
-//            System.out.println("Network error: " + e.getMessage());
-//            e.printStackTrace();
-//        }
-//    }
+    public void moveNetworkAction() {
+        try {
+
+            if ((isWhitePlayerTurn() && playerWhite instanceof NetworkPlayer) ||
+                    (!isWhitePlayerTurn() && playerBlack instanceof NetworkPlayer)) {
+
+                Move move = (Move) client.getMoveInput().readObject();
+                if (move != null) {
+                    executeMove(move);
+                    switchActive();
+                    client.getMoveOutput().writeObject("Move received");
+                }
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("Network error: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
 
     /**
      * Switches the current active player

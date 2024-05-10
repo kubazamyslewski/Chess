@@ -41,7 +41,7 @@ public class Server implements Runnable{
     /**
      * Method for starting the server
      */
-    private void runServer(){
+    public void runServer(){
         isRunning = true;
         this.run();
     }
@@ -87,12 +87,23 @@ public class Server implements Runnable{
         }
     }
 
+    public InetAddress getIPaddress() {
+        return IPaddress;
+    }
+
     /**
      * Method that checks if the server is running
      * @return boolean true if server is running, else false
      */
     public boolean isRunning(){
         return isRunning;
+    }
+
+    public Table getTableDisplayed() {
+        return tableDisplayed;
+    }
+    public void displayTable(int tableID){
+        tableDisplayed = tables.get(tableID);
     }
 
     /**
@@ -123,6 +134,9 @@ public class Server implements Runnable{
          * @throws ClassNotFoundException
          */
         private Move receiveOtherMove() throws IOException, ClassNotFoundException{
+            if(otherClientReceiver==null) {
+                return null;
+            }
             return (Move) otherClientReceiver.readObject();
         }
 
@@ -140,6 +154,7 @@ public class Server implements Runnable{
          */
         @Override
         public void run(){
+            isRunning =true;
             try {
                 while (true) {
                     if(myTurn){
@@ -173,6 +188,7 @@ public class Server implements Runnable{
             this.otherClientReceiver = new ObjectInputStream(otherClient.getInputStream());
             this.otherClientSender = new ObjectOutputStream(otherClient.getOutputStream());
         }
+
 
     }
 }

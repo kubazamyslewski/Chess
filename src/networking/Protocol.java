@@ -24,7 +24,6 @@ public enum Protocol {
     }
 
     /**
-     *
      * @return the ConnectionInformation using its id
      */
     public static Protocol get(int id){
