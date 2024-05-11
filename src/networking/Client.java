@@ -70,6 +70,30 @@ public class Client implements Runnable{
         return false;
     }
 
+    public void sendChatMessage(String message) {
+        try {
+            output.writeInt(8);
+            output.writeUTF(message);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void sendStopRequest(){
+        try {
+            output.writeInt(5);
+            Thread.sleep(500);
+            String response = input.readUTF();
+            if(response.equals("6")){
+                System.out.println("Server stopped");
+            } else {
+                System.out.println("Błąd wyłączania");
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
 
     /**
      * method for listening to incoming moves;
