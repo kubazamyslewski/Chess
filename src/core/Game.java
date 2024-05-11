@@ -36,8 +36,6 @@ public class Game extends GameLogic {
     public Game(){
         init();
         client = null;
-        newGame();
-        saveGame();
 
     }
 
@@ -58,6 +56,9 @@ public class Game extends GameLogic {
 
     public static void main(String[] args) {
         Game game = new Game();
+        game.newGame();
+        game.saveGame();
+        game.loadGame();
     }
 
     public void newGame(){
@@ -101,7 +102,6 @@ public class Game extends GameLogic {
 
     // Metoda wczytująca stan gry z pliku
     public void loadGame() {
-        Game game = new Game();
         FileHandler fileHandler = new FileHandler("zapis");
         board = (Chessboard) fileHandler.loadGameFromFile("board.ser");
         allMoves = (ArrayList<Move>) fileHandler.loadGameFromFile("allMoves.ser");
@@ -110,7 +110,7 @@ public class Game extends GameLogic {
         isWhitePlayerTurn = (boolean) fileHandler.loadGameFromFile("isWhitePlayerTurn.ser");
         isEnPassant = (boolean) fileHandler.loadGameFromFile("isEnPassant.ser");
         whereEnPassant = (Square) fileHandler.loadGameFromFile("whereEnPassant.ser");
-        System.out.println("JIODASDAIOS");
+        System.out.println("Game loading sequence finished");
 
         fileHandler = null;
     }

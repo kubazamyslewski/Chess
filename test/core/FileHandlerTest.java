@@ -65,13 +65,13 @@ class FileHandlerTest {
             assertTrue(isEnPassantFile.exists(), "isEnPassant.ser should exist after saving game data.");
             assertTrue(whereEnPassantFile.exists(), "whereEnPassant.ser should exist after saving game data.");
             
-//            board = (Chessboard) fileHandler.loadGameFromFile("board.ser");
-//            allMoves = (ArrayList<Move>) fileHandler.loadGameFromFile("allMoves.ser");
-//            playerWhite = (Player) fileHandler.loadGameFromFile("playerWhite.ser");
-//            playerBlack = (Player) fileHandler.loadGameFromFile("playerBlack.ser");
-//            isWhitePlayerTurn = (boolean) fileHandler.loadGameFromFile("isWhitePlayerTurn.ser");
-//            isEnPassant = (boolean) fileHandler.loadGameFromFile("isEnPassant.ser");
-//            whereEnPassant = (Square) fileHandler.loadGameFromFile("whereEnPassant.ser");
+            board = (Chessboard) fileHandler.loadGameFromFile("board.ser");
+            allMoves = (ArrayList<Move>) fileHandler.loadGameFromFile("allMoves.ser");
+            playerWhite = (Player) fileHandler.loadGameFromFile("playerWhite.ser");
+            playerBlack = (Player) fileHandler.loadGameFromFile("playerBlack.ser");
+            isWhitePlayerTurn = (boolean) fileHandler.loadGameFromFile("isWhitePlayerTurn.ser");
+            isEnPassant = (boolean) fileHandler.loadGameFromFile("isEnPassant.ser");
+            whereEnPassant = (Square) fileHandler.loadGameFromFile("whereEnPassant.ser");
         }
 
 }
