@@ -17,11 +17,11 @@ public class NetworkingIntegrationTest {
         Thread serverThread = new Thread(() -> {
             try {
                 Server s = new Server();
-                s.runServer();
                 s.newTable(1, "1");
                 s.newTable(2, "2");
                 s.newTable(3, "3");
                 s.displayTable(2);
+                s.runServer();
             } catch (Exception e){
                 e.printStackTrace();
             }
@@ -35,25 +35,23 @@ public class NetworkingIntegrationTest {
                 try{
                     Client clientWhite = new Client("127.0.0.1", null);
                     clientWhite.run();
-                    assertTrue(clientWhite.join(1,"1","user1"));
+                    assertTrue(clientWhite.join(1,"1","user"));
                 } catch (Exception e){
                     e.printStackTrace();
                 }
             });
-            clientW.run();
+            clientW.start();
             Thread clientB = new Thread(()->{
                 try{
                     Client clientBlack = new Client("127.0.0.1", null);
                     clientBlack.run();
-                    assertTrue(clientBlack.join(1,"2","user2"));
+                    assertTrue(clientBlack.join(1,"1","user2"));
                 } catch (Exception e){
                     e.printStackTrace();
                 }
             });
-            clientB.run();
-
-            Client clientBlack = new Client("127.0.0.1", null);
-        } catch (IOException e){
+            clientB.start();
+        } catch (Exception e){
             e.printStackTrace();
         }
     }
