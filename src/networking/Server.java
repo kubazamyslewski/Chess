@@ -19,7 +19,7 @@ public class Server implements Runnable{
     /**
      * Map containing every table on the server with Integer id
      */
-    protected static Map<Integer, Table> tables = new HashMap<>();
+    protected Map<Integer, Table> tables = new HashMap<>();
     public final int MESSAGES_PORT = 64000;
     public final int MOVES_PORT = 64001;
     protected ServerSocket moveServerSocket;
@@ -188,6 +188,7 @@ public class Server implements Runnable{
             this.otherClientReceiver = new ObjectInputStream(otherClient.getInputStream());
             this.otherClientSender = new ObjectOutputStream(otherClient.getOutputStream());
         }
+
 
 
     }

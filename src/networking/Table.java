@@ -34,8 +34,10 @@ public class Table {
         switch (playerCounter){
             case 0:
                 clientPlayerWhite = client;
+                playerCounter++;
             case 1:
                 clientPlayerBlack = client;
+                playerCounter++;
                 isAllPlayers = true;
             default:
                 System.out.println("Table is full");

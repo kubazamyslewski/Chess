@@ -8,8 +8,8 @@ import java.net.Socket;
  * Class for handling messages and protocol communication with client.
  */
 public class Service extends Thread{
-    public BufferedReader messageReceiver;
-    public PrintWriter messageSender;
+    public DataInputStream messageReceiver;
+    public DataOutputStream messageSender;
     private ServerSocket messageServerSocket;
     private Server server;
     private String username;
@@ -18,8 +18,8 @@ public class Service extends Thread{
         this.userSocket = userSocket;
         this.server = server;
         this.messageServerSocket = server.messageServerSocket;
-        this.messageReceiver = new BufferedReader(new InputStreamReader(userSocket.getInputStream()));
-        this.messageSender = new PrintWriter(userSocket.getOutputStream(),true);
+        this.messageReceiver = new DataInputStream(userSocket.getInputStream());
+        this.messageSender = new DataOutputStream(userSocket.getOutputStream());
     }
     /**
      * method for communicating with client via protocol messages
@@ -27,54 +27,58 @@ public class Service extends Thread{
     @Override
     public void run(){
         try {
-            while(true) {
-                String line;
-                while ((line = messageReceiver.readLine()) != null) {
-                    int header = Integer.parseInt(line);
+            DataInputStream dataInputStream = new DataInputStream(userSocket.getInputStream());
+            while (true) {
+                int header = dataInputStream.readInt();// Odbiór nagłówka jako int
 
-                    // Message from client contains header (defined in enum Protocol) and further message.
-                    switch (header) {
-                        case 5:
-                            server.moveServerSocket.close();
-                            sendMessage("6");
-                            messageServerSocket.close();
-                        case 7:
-                            String idTable = messageReceiver.readLine();
-                            if (server.tables.containsKey(idTable)) {
-                                server.tableDisplayed = server.tables.get(idTable);
-                                if (server.tableDisplayed.isAllPlayers()) {
-                                    sendMessage("2");
-                                } else {
-                                    String expectedPassword = server.tableDisplayed.getPassword();
-                                    String username = messageReceiver.readLine();
-                                    String insertedPassword = messageReceiver.readLine();
-                                    if (expectedPassword.equals(insertedPassword)) {
-                                        this.username = username;
-                                        server.tableDisplayed.addPlayer(this);
-                                        sendMessage("0");
-                                    } else {
-                                        sendMessage("4");
-                                    }
-                                }
+                // Message from client contains header (defined in enum Protocol) and further message.
+                switch (header) {
+                    case 5:
+                        server.moveServerSocket.close();
+                        sendMessage("6");
+                        messageServerSocket.close();
+                        break;
+                    case 7:
+                        System.out.println("Ktoś chce dołączyć");
+                        int idTable = dataInputStream.readInt();
+                        System.out.println("Table id: " + idTable) ;
+                        String username = dataInputStream.readUTF();
+                        String password = dataInputStream.readUTF();
+                        if (server.tables.containsKey(idTable)) {
+                            server.tableDisplayed = server.tables.get(idTable);
+                            if (server.tableDisplayed.isAllPlayers()) {
+                                sendMessage("2");
                             } else {
-                                sendMessage("1");
+                                String expectedPassword = server.tableDisplayed.getPassword();
+                                if (expectedPassword.equals(password)) {
+                                    this.username = username;
+                                    server.tableDisplayed.addPlayer(this);
+                                    sendMessage("0");
+                                } else {
+                                    sendMessage("3");
+                                }
                             }
-                        case 8:
-                            String chatMessage = messageReceiver.readLine();
-                        default:
-                            messageSender.println("Nieznany typ komunikatu");
-                    }
+                        } else {
+                            sendMessage("1");
+                        }
+                        break;
+                    case 8:
+                        String chatMessage = dataInputStream.readUTF();
+                        break;
+                    default:
+                        messageSender.writeUTF("Nieznany typ komunikatu");
+                        break;
                 }
             }
-        } catch (Exception e){
-            e.printStackTrace();
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
         }
     }
-    public void sendMessage(String message){
-        messageSender.write(message);
+    public void sendMessage(String message)throws IOException{
+        messageSender.writeUTF(message);
     }
     public String readMessage() throws  IOException{
-        return messageReceiver.readLine();
+        return messageReceiver.readUTF();
     }
     public String getUsername() {
         return username;

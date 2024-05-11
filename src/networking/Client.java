@@ -14,8 +14,8 @@ import java.util.Set;
  * Connects client's socket to game server, handles messages sent by server.
  */
 public class Client implements Runnable{
-    protected PrintWriter output;
-    protected BufferedReader input;
+    protected DataOutputStream output;
+    protected DataInputStream input;
     protected Game game;
     protected Socket moveServer;
     protected Socket messageServer;
@@ -26,8 +26,8 @@ public class Client implements Runnable{
        this.game = game;
        moveServer = new Socket(serverAddress, 64001);
        messageServer = new Socket(serverAddress, 64000);
-       output = new PrintWriter(messageServer.getOutputStream());
-       input = new BufferedReader(new InputStreamReader(messageServer.getInputStream()));
+       output = new DataOutputStream(messageServer.getOutputStream());
+       input = new DataInputStream(messageServer.getInputStream());
        moveOutput = new ObjectOutputStream(moveServer.getOutputStream());
        moveInput = new ObjectInputStream(moveServer.getInputStream());
     }
@@ -41,45 +41,77 @@ public class Client implements Runnable{
      */
     public boolean join(int tableID, String password, String username){
         try {
-            output.println(Protocol.JOIN.getValue());
-            output.println(tableID);
-            output.println(username);
-            output.println(password);
+            output.writeInt(7);
+            output.writeInt(tableID);
+            output.writeUTF(username);
+            output.writeUTF(password);
             Thread.sleep(1000);
-            String response = input.readLine();
-            if(response.equals("0")){
-                return true;
+            String response = input.readUTF();
+            System.out.println(response);
+            switch(response) {
+                case "0":
+                    System.out.println("Joined Table");
+                    return true;
+                case "1":
+                    System.out.println("Invalid Table ID");
+                    return false;
+                case "2":
+                    System.out.println("Table is full");
+                    return false;
+                case "3":
+                    System.out.println("Invalid paswword");
+                    return false;
+                default:
+                    System.out.println("inny błąd");
             }
-            return false;
         }catch (Exception e){
             e.printStackTrace();
         }
         return false;
     }
 
+    public void sendChatMessage(String message) {
+        try {
+            output.writeInt(8);
+            output.writeUTF(message);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void sendStopRequest(){
+        try {
+            output.writeInt(5);
+            Thread.sleep(500);
+            String response = input.readUTF();
+            if(response.equals("6")){
+                System.out.println("Server stopped");
+            } else {
+                System.out.println("Błąd wyłączania");
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
 
     /**
      * method for listening to incoming moves;
+     * TODO: implement listening to local player's moves and network player's moves
      */
     @Override
     public void run() {
-        while (true){
+        Thread moveThread = new Thread(()->{
             try {
-                while(true){
-                    Move toPlay = (Move) moveInput.readObject();
-                    if(toPlay != null){
-                        game.moveNetworkAction(toPlay);
-                    }
-                    Move toSend = receiveMove();
-                    if(receiveMove() != null){
-                        sendMove(toSend);
-                    }
+                while(true) {
+                    moveInput.readObject();
+                    Thread.sleep(1000);
                 }
-            } catch (Exception e){
-                e.printStackTrace();
+            } catch (IOException | ClassNotFoundException | InterruptedException e) {
+                throw new RuntimeException(e);
             }
-        }
-
+        });
+        moveThread.start();
     }
 
     /**
@@ -115,19 +147,19 @@ public class Client implements Runnable{
         return new Move(null,null);
     }
 
-    public PrintWriter getOutput() {
+    public DataOutputStream getOutput() {
         return output;
     }
 
-    public BufferedReader getInput() {
+    public DataInputStream getInput() {
         return input;
     }
 
-    public void setOutput(PrintWriter output) {
+    public void setOutput(DataOutputStream output) {
         this.output = output;
     }
 
-    public void setInput(BufferedReader input) {
+    public void setInput(DataInputStream input) {
         this.input = input;
     }
     public ObjectOutputStream getMoveOutput(){
@@ -135,5 +167,19 @@ public class Client implements Runnable{
     }
     public ObjectInputStream getMoveInput(){
         return moveInput;
+    }
+
+    public static void main(String[] args) throws InterruptedException, IOException {
+        Thread.sleep(1000);
+        Thread clientW = new Thread(()->{
+            try {
+                Client c = new Client("127.0.0.1", null);
+                c.join(1,"1","dup");
+                c.run();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        clientW.start();
     }
 }

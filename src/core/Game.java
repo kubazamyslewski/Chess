@@ -31,6 +31,8 @@ public class Game extends GameLogic {
     public Scanner systemin = new Scanner(System.in);
 
     private boolean isWhitePlayerTurn=true;
+    private int movesSinceCaptureOrPawnMove = 0;
+
 
 
     public Game(){
@@ -162,6 +164,14 @@ public class Game extends GameLogic {
             switchActive();  // Switch turns
         }
     }
+    public boolean checkGameStatus() {
+        if (isFiftyMoveRuleReached()) {
+            System.out.println("Stalemate due to 50-move rule.");
+            return true; // Game ends in a draw
+        }
+        // Other game status checks
+        return false;
+    }
 
     /**
      * Executes a move on the board, handling captures and moving the piece.
@@ -169,12 +179,18 @@ public class Game extends GameLogic {
     private void executeMove(Move move) {
         Square startSquare = move.getStartSquare();
         Square endSquare = move.getEndSquare();
-        Piece movingPiece = startSquare.getPiece();  // Get the piece making the move
+        Piece movingPiece = startSquare.getPiece();
+
+        if (movingPiece instanceof Pawn || endSquare.getPiece() != null) {
+            movesSinceCaptureOrPawnMove = 0; // Reset counter on pawn move or capture
+        } else {
+            movesSinceCaptureOrPawnMove++; // Increment counter otherwise
+        }
 
         if (movingPiece != null) {
             // Handle capture
             if (endSquare.getPiece() != null) {
-                // Capture logic, e.g., adding to a list of captured pieces if needed
+                capturePiece(endSquare); // Assuming there is a method to handle capture
             }
             // Move the piece
             endSquare.setPiece(movingPiece);
@@ -183,6 +199,7 @@ public class Game extends GameLogic {
             handleSpecialMoves(move, movingPiece);
         }
     }
+
     private void capturePiece(Square square) {
 
         square.setPiece(null); //
@@ -231,6 +248,10 @@ public class Game extends GameLogic {
             rookEnd.setPiece(rookStart.getPiece());
             rookStart.setPiece(null);
         }
+    }
+
+    public boolean isFiftyMoveRuleReached() {
+        return movesSinceCaptureOrPawnMove >= 50;
     }
 
 
