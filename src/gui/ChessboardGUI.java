@@ -89,16 +89,27 @@ public class ChessboardGUI extends JFrame {
                     clearHighlightedSquares();
                     switchTurn();
                 }
+                movePrep = false;
+                possibleMoves = null;
+            } else {
+                clearHighlightedSquares();
+                if (piece != null && piece.getColor().equals(isWhiteTurn ? "WHITE" : "BLACK")) {
+                    possibleMoves = highlightLegalMoves(square);
+                    movePrep = true;
+                } else {
+                    movePrep = false;
+                    possibleMoves = null;
+                }
             }
-            movePrep = false;
-            possibleMoves = null;
         } else if (piece != null && piece.getColor().equals(isWhiteTurn ? "WHITE" : "BLACK")) {
+            clearHighlightedSquares();
             possibleMoves = highlightLegalMoves(square);
             movePrep = true;
         } else {
             System.out.println("Clicked on empty square at " + square.getX() + ", " + square.getY());
         }
     }
+
 
     private void clearHighlightedSquares() {
         for (int x = 0; x < 8; x++) {

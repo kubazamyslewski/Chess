@@ -7,6 +7,8 @@ import players.Player;
 
 import enums.PieceColor;
 
+import java.util.Objects;
+
 /**
  * This class contains static methods that are checking game state using 8x8 table from chessboard
  */
@@ -91,7 +93,7 @@ public class GameLogic {
             for (Square checkingSquare : checkingRow) {
 //    			Piece checkingPiece = checkingSquare.getPiece();
                 for (Move move : PieceBehaviour.whateverLegalMovesLookup(checkingSquare, squares)) {
-                    if ((move.getEndSquare().getPiece().getName() == "King") && (move.getEndSquare().getPiece().getPlayer() == playerChecked) && (move.getStartSquare().getPiece().getPlayer() == playerChecking)) {
+                    if ((Objects.equals(move.getEndSquare().getPiece().getName(), "King")) && (move.getEndSquare().getPiece().getPlayer() == playerChecked) && (move.getStartSquare().getPiece().getPlayer() == playerChecking)) {
                         return true;
                     }
                 }
