@@ -7,8 +7,6 @@ import players.Player;
 
 import enums.PieceColor;
 
-import java.util.Objects;
-
 /**
  * This class contains static methods that are checking game state using 8x8 table from chessboard
  */
@@ -34,7 +32,7 @@ public class GameLogic {
         this.whereEnPassant = whereEnPassant;
     }
 
-    public static boolean isTurnCompliantWithColor(Game game, Player playerChecked, Player playerChecking, Square[][] squares) {
+    public static boolean isTurnCompilantWithColor(Game game, Player playerChecked, Player playerChecking, Square[][] squares) {
         if ((game.isWhitePlayerTurn() && (playerChecked.getColor() == PieceColor.WHITE)) || (!game.isWhitePlayerTurn() && (playerChecked.getColor() == PieceColor.BLACK))) {
             return true;
         }
@@ -42,17 +40,30 @@ public class GameLogic {
 
     }
 
+    /**
+     * checks if a given player is checkmated
+     *
+     * @param player
+     * @param squares
+     * @return
+     */
     public static boolean isCheckmate(Game game, Player playerChecked, Player playerChecking, Square[][] squares) {
         // Jeśli jest tak, że jest szach i nie jest aktualnie ruch gracza który jest szachowany to jest mat
-        if (!isTurnCompliantWithColor(game, playerChecked, playerChecking, squares) && isCheck(playerChecked, playerChecking, squares)) {
+        if (!isTurnCompilantWithColor(game, playerChecked, playerChecking, squares) && isCheck(playerChecked, playerChecking, squares)) {
             return true;
         }
         return false;
     }
 
-
+    /**
+     * Checks if there is a stalemate
+     *
+     * @param player
+     * @param squares
+     * @return
+     */
     public static boolean isStalemate(Game game, Player playerStalemated, Player playerUnhappy, Square[][] squares) {
-        if (isTurnCompliantWithColor(game, playerStalemated, playerUnhappy, squares) && !isCheck(playerStalemated, playerUnhappy, squares)) {
+        if (isTurnCompilantWithColor(game, playerStalemated, playerUnhappy, squares) && !isCheck(playerStalemated, playerUnhappy, squares)) {
             for (Square[] checkingRow : squares) {
                 for (Square checkingSquare : checkingRow) {
                     for (Move move : PieceBehaviour.whateverLegalMovesLookup(checkingSquare, squares)) {
@@ -66,6 +77,13 @@ public class GameLogic {
         return false;
     }
 
+    /**
+     * Checks if given player's king is in check
+     *
+     * @param player
+     * @param squares
+     * @return
+     */
     public static boolean isCheck(Player playerChecked, Player playerChecking, Square[][] squares) {
 //    	PieceColor colorChecked = playerChecked.getColor();
 // colorChecking = playerChecking.getColor();
@@ -73,7 +91,7 @@ public class GameLogic {
             for (Square checkingSquare : checkingRow) {
 //    			Piece checkingPiece = checkingSquare.getPiece();
                 for (Move move : PieceBehaviour.whateverLegalMovesLookup(checkingSquare, squares)) {
-                    if ((Objects.equals(move.getEndSquare().getPiece().getName(), "King")) && (move.getEndSquare().getPiece().getPlayer() == playerChecked) && (move.getStartSquare().getPiece().getPlayer() == playerChecking)) {
+                    if ((move.getEndSquare().getPiece().getName() == "King") && (move.getEndSquare().getPiece().getPlayer() == playerChecked) && (move.getStartSquare().getPiece().getPlayer() == playerChecking)) {
                         return true;
                     }
                 }

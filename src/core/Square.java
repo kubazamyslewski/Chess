@@ -1,6 +1,7 @@
 package core;
 
 import java.io.Serializable;
+
 import core.pieces.Piece;
 
 /**
@@ -8,10 +9,13 @@ import core.pieces.Piece;
  * Basic tile on the chess board with a piece standing on it
  */
 public class Square implements Serializable {
-    private int x, y;
+    //this class may be good for direct gui implementation
+    private int x;
+    private int y;
+
     private Piece piece;
 
-    public Square(int y, int x, Piece piece){
+    public Square(int x, int y, Piece piece){
         this.x = x;
         this.y = y;
         this.piece = piece;
