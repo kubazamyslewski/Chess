@@ -94,7 +94,12 @@ public class ChessboardGUI extends JFrame {
         public void updateIcon() {
             Piece piece = square.getPiece();
             if (piece != null) {
-                setIcon(new ImageIcon("path/to/" + piece.getName() + ".png"));
+                if (piece.getColor().equals("WHITE")) {
+                    setIcon(new ImageIcon("Pictures/white" + piece.getName() + ".png"));
+                } else {
+                    setIcon(new ImageIcon("Pictures/black" + piece.getName() + ".png"));
+                }
+
             } else {
                 setIcon(null);
             }
