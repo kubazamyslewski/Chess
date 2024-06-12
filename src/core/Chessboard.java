@@ -3,6 +3,7 @@ package core;
 import java.io.Serializable;
 
 import core.pieces.*;
+import players.HumanPlayer;
 import players.Player;
 
 /**
@@ -12,6 +13,17 @@ import players.Player;
  */
 public class Chessboard implements Serializable{
     private Square[][] squares;
+
+	// test main
+	public static void main(String[] args) {
+		Chessboard board = new Chessboard();
+		board.setSquares();
+		board.setPiecesAtStart(new HumanPlayer(), new HumanPlayer());
+		Move[] movesArray = PieceBehaviour.queenLegalMoves(board.getSquare(3, 0), board.getSquares());
+		for (Move m : movesArray) {
+			System.out.println("x:" + m.getEndSquare().getX() + " y:" + m.getEndSquare().getY());
+		}
+	}
 
     /**
      * Make a board full of sqares
@@ -90,17 +102,21 @@ public class Chessboard implements Serializable{
     	King WhiteKing = new King(playerWhite);
     	squares[4][7].setPiece(WhiteKing);
 
-		//White pawns
-		for (int i = 0; i <= 7; i++) {
-			Pawn WhitePawn = new Pawn(playerWhite);
-			squares[i][6].setPiece(WhitePawn);
-		}
+			//White pawns
+			for (int i = 0; i <= 7; i++) {
+				Pawn WhitePawn = new Pawn(playerWhite);
+				squares[i][6].setPiece(WhitePawn);
+			}
 
-		//Black pawns
-		for (int i = 0; i <= 7; i++) {
-			Pawn BlackPawn = new Pawn(playerBlack);
-			squares[i][1].setPiece(BlackPawn);
-		}
+			//Black pawns
+			for (int i = 0; i <= 7; i++) {
+				Pawn BlackPawn = new Pawn(playerBlack);
+				squares[i][1].setPiece(BlackPawn);
+			}
+
+			//test
+			Queen testQueen = new Queen(playerWhite);
+			squares[2][2].setPiece(WhiteQueen);
 
     }
 

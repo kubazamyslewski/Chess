@@ -3,6 +3,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import core.*;
 import enums.PieceColor;
@@ -12,6 +13,11 @@ import core.pieces.*;
 
 
 public class ChessboardGUI extends JFrame {
+
+    //attributes required for handling a move
+    Move[] possibleMoves;
+    private Boolean movePrep = false;
+
     private Chessboard chessboard;
     private Player playerWhite;
     private Player playerBlack;
@@ -58,16 +64,32 @@ public class ChessboardGUI extends JFrame {
     }
 
     private void handleSquareClick(SquareButton button) {
+
         Square square = button.getSquare();
         Piece piece = square.getPiece();
 
-        // Clear all highlighted squares
-        clearHighlightedSquares();
 
-        if (piece != null) {
+        if (movePrep == true) {
+            Move move = null;
+            if(button.getBackground().equals(Color.CYAN)) {
+                System.out.println("Hello");
+                for (Move m : possibleMoves) {
+                    if (m.getEndSquare().equals(button.getSquare())) {
+                        move = m;
+                        break;
+                    }
+                }
+                chessboard.makeMove(move);
+                updateBoard();
+                // Clear all highlighted squares
+                clearHighlightedSquares();
+            }
+            movePrep = false;
+            possibleMoves = null;
+        } else if (piece != null) {
             // Highlight legal moves for the clicked piece
-            highlightLegalMoves(square);
-
+            possibleMoves = highlightLegalMoves(square);
+            movePrep = true;
             if (piece.getColor().equals("WHITE")) {
                 System.out.println("Clicked on white " + piece.getName() + " at " + square.getX() + ", " + square.getY());
             } else {
@@ -76,6 +98,7 @@ public class ChessboardGUI extends JFrame {
         } else {
             System.out.println("Clicked on empty square at " + square.getX() + ", " + square.getY());
         }
+
     }
     private void clearHighlightedSquares() {
         // Clear all highlighted squares
@@ -87,15 +110,37 @@ public class ChessboardGUI extends JFrame {
     }
 
 
-    private void highlightLegalMoves(Square startSquare) {
+    private Move[] highlightLegalMoves(Square startSquare) {
         Piece piece = startSquare.getPiece();
-        Move[] legalMoves = PieceBehaviour.whateverLegalMovesLookup(startSquare, chessboard.getSquares());
-
-        // Highlight squares corresponding to legal moves
-        for (Move move : legalMoves) {
-            Square endSquare = move.getEndSquare();
-            squareButtons[endSquare.getX()][endSquare.getY()].setBackground(Color.YELLOW);
+        Move[] movesArray;
+        switch(piece.getName()) {
+            case "Rook":
+                movesArray = PieceBehaviour.rookLegalMoves(startSquare, chessboard.getSquares());
+                break;
+            case "Knight":
+                movesArray = PieceBehaviour.knightLegalMoves(startSquare, chessboard.getSquares());
+                break;
+            case "Bishop":
+                movesArray = PieceBehaviour.bishopLegalMoves(startSquare, chessboard.getSquares());
+                break;
+            case "Queen":
+                movesArray = PieceBehaviour.queenLegalMoves(startSquare, chessboard.getSquares());
+                break;
+            case "King":
+                movesArray = PieceBehaviour.kingLegalMoves(startSquare, chessboard.getSquares());
+                break;
+            case "Pawn":
+                movesArray = PieceBehaviour.pawnLegalMoves(startSquare, chessboard.getSquares());
+                break;
+            default:
+                movesArray = new Move[0];
+                break;
         }
+        for(Move m : movesArray) {
+            Square endSquare = m.getEndSquare();
+            squareButtons[endSquare.getX()][endSquare.getY()].setBackground(Color.CYAN);
+        }
+        return movesArray;
     }
 
 

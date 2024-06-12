@@ -90,37 +90,37 @@ public class PieceBehaviour {
         int y = checkedSquare.getY();
         List<Move> legalMoves = new ArrayList<>();
 
-        if (piece.getColor().equals("Black")) {
+        if (piece.getColor().equals("BLACK")) {
             // Sprawdź pierwszy ruch i ruchy do przodu
-            if (x == 1 && squares[x + 1][y].getPiece() == null && squares[x + 2][y].getPiece() == null) {
-                legalMoves.add(new Move(checkedSquare, squares[x + 2][y]));
+            if (y == 1 && squares[x][y+1].getPiece() == null && squares[x][y+2].getPiece() == null) {
+                legalMoves.add(new Move(checkedSquare, squares[x][y+2]));
             }
-            if (x < squares.length - 1 && squares[x + 1][y].getPiece() == null) {
-                legalMoves.add(new Move(checkedSquare, squares[x + 1][y]));
+            if (y < squares.length - 1 && squares[x][y+1].getPiece() == null) {
+                legalMoves.add(new Move(checkedSquare, squares[x][y+1]));
             }
 
-            // Sprawdź bicie
+            //TODO Sprawdź bicie
             if (x < squares.length - 1 && y < squares[0].length - 1 && squares[x + 1][y + 1].getPiece() != null) {
                 legalMoves.add(new Move(checkedSquare, squares[x + 1][y + 1]));
             }
-            if (x < squares.length - 1 && y > 0 && squares[x + 1][y - 1].getPiece() != null) {
-                legalMoves.add(new Move(checkedSquare, squares[x + 1][y - 1]));
+            if (x > 0 && y > 0 && squares[x - 1][y + 1].getPiece() != null) {
+                legalMoves.add(new Move(checkedSquare, squares[x - 1][y + 1]));
             }
         } else {
             // Sprawdź pierwszy ruch i ruchy do przodu
-            if (x == 6 && squares[x - 1][y].getPiece() == null && squares[x - 2][y].getPiece() == null) {
-                legalMoves.add(new Move(checkedSquare, squares[x - 2][y]));
+            if (y == 6 && squares[x][y-1].getPiece() == null && squares[x][y-2].getPiece() == null) {
+                legalMoves.add(new Move(checkedSquare, squares[x][y-2]));
             }
-            if (x > 0 && squares[x - 1][y].getPiece() == null) {
-                legalMoves.add(new Move(checkedSquare, squares[x - 1][y]));
+            if (y > 0 && squares[x][y-1].getPiece() == null) {
+                legalMoves.add(new Move(checkedSquare, squares[x][y-1]));
             }
 
-            // Sprawdź bicie
-            if (x > 0 && y < squares[0].length - 1 && squares[x - 1][y + 1].getPiece() != null) {
-                legalMoves.add(new Move(checkedSquare, squares[x - 1][y + 1]));
-            }
-            if (x > 0 && y > 0 && squares[x - 1][y - 1].getPiece() != null) {
+            //TODO Sprawdź bicie
+            if (x > 0 && y < squares[0].length - 1 && squares[x - 1][y - 1].getPiece() != null) {
                 legalMoves.add(new Move(checkedSquare, squares[x - 1][y - 1]));
+            }
+            if (x < 7 && y > 0 && squares[x + 1][y - 1].getPiece() != null) {
+                legalMoves.add(new Move(checkedSquare, squares[x + 1][y - 1]));
             }
         }
 
@@ -185,6 +185,7 @@ public class PieceBehaviour {
                 break;
             }
         }
+        legalMoves = trimMoveArray(legalMoves);
         return legalMoves;
     }
 
@@ -245,6 +246,8 @@ public class PieceBehaviour {
                 break;
             }
         }
+
+        legalMoves = trimMoveArray(legalMoves);
         return legalMoves;
     }
 
@@ -269,6 +272,7 @@ public class PieceBehaviour {
                 }
             }
         }
+        legalMoves = trimMoveArray(legalMoves);
         return legalMoves;
     }
 
@@ -277,11 +281,91 @@ public class PieceBehaviour {
         if (piece == null || !piece.getName().equals("Queen")) {
             return null;
         }
+        int x = checkedSquare.getX();
+        int y = checkedSquare.getY();
         List<Move> legalMoves = new ArrayList<>();
-        Move[] rookMoves = rookLegalMoves(checkedSquare, squares);
-        Move[] bishopMoves = bishopLegalMoves(checkedSquare, squares);
-        Collections.addAll(legalMoves, rookMoves);
-        Collections.addAll(legalMoves, bishopMoves);
+        for (int i = x + 1, j = y + 1; i < squares.length && j < squares[0].length; i++, j++) {
+            if (squares[i][j].getPiece() == null) {
+                legalMoves.add(new Move(checkedSquare, squares[i][j]));
+            } else {
+                if (squares[i][j].getPiece().getPlayer() != piece.getPlayer()) {
+                    legalMoves.add(new Move(checkedSquare, squares[i][j]));
+                }
+                break;
+            }
+        }
+        for (int i = x + 1, j = y - 1; i < squares.length && j >= 0; i++, j--) {
+            if (squares[i][j].getPiece() == null) {
+                legalMoves.add(new Move(checkedSquare, squares[i][j]));
+            } else {
+                if (squares[i][j].getPiece().getPlayer() != piece.getPlayer()) {
+                    legalMoves.add(new Move(checkedSquare, squares[i][j]));
+                }
+                break;
+            }
+        }
+        for (int i = x - 1, j = y + 1; i >= 0 && j < squares[0].length; i--, j++) {
+            if (squares[i][j].getPiece() == null) {
+                legalMoves.add(new Move(checkedSquare, squares[i][j]));
+            } else {
+                if (squares[i][j].getPiece().getPlayer() != piece.getPlayer()) {
+                    legalMoves.add(new Move(checkedSquare, squares[i][j]));
+                }
+                break;
+            }
+        }
+        for (int i = x - 1, j = y - 1; i >= 0 && j >= 0; i--, j--) {
+            if (squares[i][j].getPiece() == null) {
+                legalMoves.add(new Move(checkedSquare, squares[i][j]));
+            } else {
+                if (squares[i][j].getPiece().getPlayer() != piece.getPlayer()) {
+                    legalMoves.add(new Move(checkedSquare, squares[i][j]));
+                }
+                break;
+            }
+        }
+
+        for (int i = x + 1; i < squares.length; i++) {
+            if (squares[i][y].getPiece() == null) {
+                legalMoves.add(new Move(checkedSquare, squares[i][y]));
+            } else {
+                if (squares[i][y].getPiece().getPlayer() != piece.getPlayer()) {
+                    legalMoves.add(new Move(checkedSquare, squares[i][y]));
+                }
+                break;
+            }
+        }
+        for (int i = x - 1; i >= 0; i--) {
+            if (squares[i][y].getPiece() == null) {
+                legalMoves.add(new Move(checkedSquare, squares[i][y]));
+            } else {
+                if (squares[i][y].getPiece().getPlayer() != piece.getPlayer()) {
+                    legalMoves.add(new Move(checkedSquare, squares[i][y]));
+                }
+                break;
+            }
+        }
+        for (int j = y + 1; j < squares[0].length; j++) {
+            if (squares[x][j].getPiece() == null) {
+                legalMoves.add(new Move(checkedSquare, squares[x][j]));
+            } else {
+                if (squares[x][j].getPiece().getPlayer() != piece.getPlayer()) {
+                    legalMoves.add(new Move(checkedSquare, squares[x][j]));
+                }
+                break;
+            }
+        }
+        for (int j = y - 1; j >= 0; j--) {
+            if (squares[x][j].getPiece() == null) {
+                legalMoves.add(new Move(checkedSquare, squares[x][j]));
+            } else {
+                if (squares[x][j].getPiece().getPlayer() != piece.getPlayer()) {
+                    legalMoves.add(new Move(checkedSquare, squares[x][j]));
+                }
+                break;
+            }
+        }
+
         return legalMoves.toArray(new Move[0]);
     }
 
