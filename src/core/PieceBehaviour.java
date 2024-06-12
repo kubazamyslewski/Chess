@@ -92,40 +92,53 @@ public class PieceBehaviour {
 
         if (piece.getColor().equals("BLACK")) {
             // Sprawdź pierwszy ruch i ruchy do przodu
-            if (y == 1 && squares[x][y+1].getPiece() == null && squares[x][y+2].getPiece() == null) {
-                legalMoves.add(new Move(checkedSquare, squares[x][y+2]));
+            if (y == 1 && squares[x][y + 1].getPiece() == null && squares[x][y + 2].getPiece() == null) {
+                legalMoves.add(new Move(checkedSquare, squares[x][y + 2]));
             }
-            if (y < squares.length - 1 && squares[x][y+1].getPiece() == null) {
-                legalMoves.add(new Move(checkedSquare, squares[x][y+1]));
+            if (y < squares.length - 1 && squares[x][y + 1].getPiece() == null) {
+                legalMoves.add(new Move(checkedSquare, squares[x][y + 1]));
             }
 
-            //TODO Sprawdź bicie
-            if (x < squares.length - 1 && y < squares[0].length - 1 && squares[x + 1][y + 1].getPiece() != null) {
-                legalMoves.add(new Move(checkedSquare, squares[x + 1][y + 1]));
+            // bicie
+            if (x < squares.length - 1 && y < squares[0].length - 1) {
+                Piece targetPiece = squares[x + 1][y + 1].getPiece();
+                if (targetPiece != null && !targetPiece.getColor().equals(piece.getColor())) {
+                    legalMoves.add(new Move(checkedSquare, squares[x + 1][y + 1]));
+                }
             }
-            if (x > 0 && y > 0 && squares[x - 1][y + 1].getPiece() != null) {
-                legalMoves.add(new Move(checkedSquare, squares[x - 1][y + 1]));
+            if (x > 0 && y < squares[0].length - 1) {
+                Piece targetPiece = squares[x - 1][y + 1].getPiece();
+                if (targetPiece != null && !targetPiece.getColor().equals(piece.getColor())) {
+                    legalMoves.add(new Move(checkedSquare, squares[x - 1][y + 1]));
+                }
             }
         } else {
             // Sprawdź pierwszy ruch i ruchy do przodu
-            if (y == 6 && squares[x][y-1].getPiece() == null && squares[x][y-2].getPiece() == null) {
-                legalMoves.add(new Move(checkedSquare, squares[x][y-2]));
+            if (y == 6 && squares[x][y - 1].getPiece() == null && squares[x][y - 2].getPiece() == null) {
+                legalMoves.add(new Move(checkedSquare, squares[x][y - 2]));
             }
-            if (y > 0 && squares[x][y-1].getPiece() == null) {
-                legalMoves.add(new Move(checkedSquare, squares[x][y-1]));
+            if (y > 0 && squares[x][y - 1].getPiece() == null) {
+                legalMoves.add(new Move(checkedSquare, squares[x][y - 1]));
             }
 
-            //TODO Sprawdź bicie
-            if (x > 0 && y < squares[0].length - 1 && squares[x - 1][y - 1].getPiece() != null) {
-                legalMoves.add(new Move(checkedSquare, squares[x - 1][y - 1]));
+            // bicie
+            if (x > 0 && y > 0) {
+                Piece targetPiece = squares[x - 1][y - 1].getPiece();
+                if (targetPiece != null && !targetPiece.getColor().equals(piece.getColor())) {
+                    legalMoves.add(new Move(checkedSquare, squares[x - 1][y - 1]));
+                }
             }
-            if (x < 7 && y > 0 && squares[x + 1][y - 1].getPiece() != null) {
-                legalMoves.add(new Move(checkedSquare, squares[x + 1][y - 1]));
+            if (x < squares.length - 1 && y > 0) {
+                Piece targetPiece = squares[x + 1][y - 1].getPiece();
+                if (targetPiece != null && !targetPiece.getColor().equals(piece.getColor())) {
+                    legalMoves.add(new Move(checkedSquare, squares[x + 1][y - 1]));
+                }
             }
         }
 
         return legalMoves.toArray(new Move[0]);
     }
+
 
 
     public static Move[] rookLegalMoves(Square checkedSquare, Square[][] squares) {

@@ -32,7 +32,7 @@ public class GameLogic {
         this.whereEnPassant = whereEnPassant;
     }
 
-    public static boolean isTurnCompilantWithColor(Game game, Player playerChecked, Player playerChecking, Square[][] squares) {
+    public static boolean isTurnCompliantWithColor(Game game, Player playerChecked, Player playerChecking, Square[][] squares) {
         if ((game.isWhitePlayerTurn() && (playerChecked.getColor() == PieceColor.WHITE)) || (!game.isWhitePlayerTurn() && (playerChecked.getColor() == PieceColor.BLACK))) {
             return true;
         }
@@ -49,7 +49,7 @@ public class GameLogic {
      */
     public static boolean isCheckmate(Game game, Player playerChecked, Player playerChecking, Square[][] squares) {
         // Jeśli jest tak, że jest szach i nie jest aktualnie ruch gracza który jest szachowany to jest mat
-        if (!isTurnCompilantWithColor(game, playerChecked, playerChecking, squares) && isCheck(playerChecked, playerChecking, squares)) {
+        if (!isTurnCompliantWithColor(game, playerChecked, playerChecking, squares) && isCheck(playerChecked, playerChecking, squares)) {
             return true;
         }
         return false;
@@ -63,7 +63,7 @@ public class GameLogic {
      * @return
      */
     public static boolean isStalemate(Game game, Player playerStalemated, Player playerUnhappy, Square[][] squares) {
-        if (isTurnCompilantWithColor(game, playerStalemated, playerUnhappy, squares) && !isCheck(playerStalemated, playerUnhappy, squares)) {
+        if (isTurnCompliantWithColor(game, playerStalemated, playerUnhappy, squares) && !isCheck(playerStalemated, playerUnhappy, squares)) {
             for (Square[] checkingRow : squares) {
                 for (Square checkingSquare : checkingRow) {
                     for (Move move : PieceBehaviour.whateverLegalMovesLookup(checkingSquare, squares)) {

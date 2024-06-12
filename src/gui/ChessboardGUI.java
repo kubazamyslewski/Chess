@@ -17,11 +17,13 @@ public class ChessboardGUI extends JFrame {
     //attributes required for handling a move
     Move[] possibleMoves;
     private Boolean movePrep = false;
+    private Boolean isWhiteTurn = true;
 
     private Chessboard chessboard;
     private Player playerWhite;
     private Player playerBlack;
     private JPanel boardPanel;
+    private JLabel statusLabel;
     private SquareButton[][] squareButtons;
 
     public ChessboardGUI() {
@@ -39,8 +41,12 @@ public class ChessboardGUI extends JFrame {
         boardPanel = new JPanel(new GridLayout(8, 8));
         squareButtons = new SquareButton[8][8];
 
+        statusLabel = new JLabel("Turn: White");
+        statusLabel.setHorizontalAlignment(SwingConstants.CENTER);
         initializeBoard();
-        add(boardPanel);
+
+        add(statusLabel, BorderLayout.NORTH);
+        add(boardPanel, BorderLayout.CENTER);
         setVisible(true);
     }
 
@@ -64,51 +70,43 @@ public class ChessboardGUI extends JFrame {
     }
 
     private void handleSquareClick(SquareButton button) {
-
         Square square = button.getSquare();
         Piece piece = square.getPiece();
 
-
-        if (movePrep == true) {
+        if (movePrep) {
             Move move = null;
-            if(button.getBackground().equals(Color.CYAN)) {
-                System.out.println("Hello");
+            if (button.getBackground().equals(Color.CYAN)) {
                 for (Move m : possibleMoves) {
                     if (m.getEndSquare().equals(button.getSquare())) {
                         move = m;
                         break;
                     }
                 }
-                chessboard.makeMove(move);
-                updateBoard();
-                // Clear all highlighted squares
-                clearHighlightedSquares();
+                if (move != null) {
+                    chessboard.makeMove(move);
+                    updateBoard();
+                    checkGameState();
+                    clearHighlightedSquares();
+                    switchTurn();
+                }
             }
             movePrep = false;
             possibleMoves = null;
-        } else if (piece != null) {
-            // Highlight legal moves for the clicked piece
+        } else if (piece != null && piece.getColor().equals(isWhiteTurn ? "WHITE" : "BLACK")) {
             possibleMoves = highlightLegalMoves(square);
             movePrep = true;
-            if (piece.getColor().equals("WHITE")) {
-                System.out.println("Clicked on white " + piece.getName() + " at " + square.getX() + ", " + square.getY());
-            } else {
-                System.out.println("Clicked on black " + piece.getName() + " at " + square.getX() + ", " + square.getY());
-            }
         } else {
             System.out.println("Clicked on empty square at " + square.getX() + ", " + square.getY());
         }
-
     }
+
     private void clearHighlightedSquares() {
-        // Clear all highlighted squares
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
                 squareButtons[x][y].setBackground((x + y) % 2 == 0 ? Color.WHITE : Color.GRAY);
             }
         }
     }
-
 
     private Move[] highlightLegalMoves(Square startSquare) {
         Piece piece = startSquare.getPiece();
@@ -136,13 +134,12 @@ public class ChessboardGUI extends JFrame {
                 movesArray = new Move[0];
                 break;
         }
-        for(Move m : movesArray) {
+        for (Move m : movesArray) {
             Square endSquare = m.getEndSquare();
             squareButtons[endSquare.getX()][endSquare.getY()].setBackground(Color.CYAN);
         }
         return movesArray;
     }
-
 
     private void updateBoard() {
         for (int x = 0; x < 8; x++) {
@@ -150,6 +147,22 @@ public class ChessboardGUI extends JFrame {
                 squareButtons[x][y].updateIcon();
             }
         }
+    }
+
+    private void switchTurn() {
+        isWhiteTurn = !isWhiteTurn;
+        statusLabel.setText("Turn: " + (isWhiteTurn ? "White" : "Black"));
+    }
+
+    private void checkGameState() {
+    }
+
+    private void resetGame() {
+        chessboard.setSquares();
+        chessboard.setPiecesAtStart(playerWhite, playerBlack);
+        updateBoard();
+        isWhiteTurn = true;
+        statusLabel.setText("Turn: White");
     }
 
     public static void main(String[] args) {
@@ -176,7 +189,6 @@ public class ChessboardGUI extends JFrame {
                 } else {
                     setIcon(new ImageIcon("Pictures/black" + piece.getName() + ".png"));
                 }
-
             } else {
                 setIcon(null);
             }
@@ -184,4 +196,3 @@ public class ChessboardGUI extends JFrame {
         }
     }
 }
-
