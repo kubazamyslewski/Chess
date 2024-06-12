@@ -12,9 +12,7 @@ import java.io.Serializable;
 public class Move implements Serializable {
     private Square startSquare;
     private Square endSquare;
-
     private boolean promotion = false;
-
     private Piece promotionPiece;
 
     public Move(Square startSquare, Square endSquare){

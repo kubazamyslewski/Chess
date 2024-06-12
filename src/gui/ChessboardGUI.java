@@ -13,8 +13,6 @@ import core.pieces.*;
 
 public class ChessboardGUI extends JFrame {
     private Chessboard chessboard;
-    private Player playerWhite;
-    private Player playerBlack;
     private JPanel boardPanel;
     private SquareButton[][] squareButtons;
 
@@ -22,8 +20,8 @@ public class ChessboardGUI extends JFrame {
         chessboard = new Chessboard();
         chessboard.setSquares();
 
-        playerWhite = new HumanPlayer("Player 1", PieceColor.WHITE);
-        playerBlack = new HumanPlayer("Player 2", PieceColor.BLACK);
+        Player playerWhite = new HumanPlayer("Player 1", PieceColor.WHITE);
+        Player playerBlack = new HumanPlayer("Player 2", PieceColor.BLACK);
 
         chessboard.setPiecesAtStart(playerWhite, playerBlack);
 
@@ -39,9 +37,9 @@ public class ChessboardGUI extends JFrame {
     }
 
     private void initializeBoard() {
-        for (int x = 0; x < 8; x++) {
-            for (int y = 0; y < 8; y++) {
-                Square square = chessboard.getSquare(x, y);
+        for (int y = 0; y < 8; y++) {
+            for (int x = 0; x < 8; x++) {
+                Square square = chessboard.getSquare(y, x);
                 SquareButton button = new SquareButton(square);
                 button.setPreferredSize(new Dimension(100, 100));
                 button.addActionListener(new ActionListener() {
@@ -50,7 +48,7 @@ public class ChessboardGUI extends JFrame {
                         handleSquareClick(button);
                     }
                 });
-                squareButtons[x][y] = button;
+                squareButtons[y][x] = button;
                 boardPanel.add(button);
             }
         }
@@ -60,28 +58,25 @@ public class ChessboardGUI extends JFrame {
     private void handleSquareClick(SquareButton button) {
         Square square = button.getSquare();
         Piece piece = square.getPiece();
-
-        // Clear all highlighted squares
         clearHighlightedSquares();
 
         if (piece != null) {
-            // Highlight legal moves for the clicked piece
             highlightLegalMoves(square);
 
             if (piece.getColor().equals("WHITE")) {
-                System.out.println("Clicked on white " + piece.getName() + " at " + square.getX() + ", " + square.getY());
+                System.out.println("Clicked on white " + piece.getName() + " at " + square.getY() + ", " + square.getX());
             } else {
-                System.out.println("Clicked on black " + piece.getName() + " at " + square.getX() + ", " + square.getY());
+                System.out.println("Clicked on black " + piece.getName() + " at " + square.getY() + ", " + square.getX());
             }
         } else {
-            System.out.println("Clicked on empty square at " + square.getX() + ", " + square.getY());
+            System.out.println("Clicked on empty square at " + square.getY() + ", " + square.getX());
         }
     }
     private void clearHighlightedSquares() {
         // Clear all highlighted squares
-        for (int x = 0; x < 8; x++) {
-            for (int y = 0; y < 8; y++) {
-                squareButtons[x][y].setBackground((x + y) % 2 == 0 ? Color.WHITE : Color.GRAY);
+        for (int y = 0; y < 8; y++) {
+            for (int x = 0; x < 8; x++) {
+                squareButtons[y][x].setBackground((x + y) % 2 == 0 ? Color.WHITE : Color.GRAY);
             }
         }
     }
@@ -91,7 +86,6 @@ public class ChessboardGUI extends JFrame {
         Piece piece = startSquare.getPiece();
         Move[] legalMoves = PieceBehaviour.whateverLegalMovesLookup(startSquare, chessboard.getSquares());
 
-        // Highlight squares corresponding to legal moves
         for (Move move : legalMoves) {
             Square endSquare = move.getEndSquare();
             squareButtons[endSquare.getX()][endSquare.getY()].setBackground(Color.YELLOW);
@@ -100,9 +94,9 @@ public class ChessboardGUI extends JFrame {
 
 
     private void updateBoard() {
-        for (int x = 0; x < 8; x++) {
-            for (int y = 0; y < 8; y++) {
-                squareButtons[x][y].updateIcon();
+        for (int y = 0; y < 8; y++) {
+            for (int x = 0; x < 8; x++) {
+                squareButtons[y][x].updateIcon();
             }
         }
     }
