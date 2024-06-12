@@ -18,9 +18,9 @@ public class Chessboard implements Serializable{
      */
     public void setSquares() {
     	squares = new Square[8][8];
-    	for (int y=0; y<8; y++) {
-    		for (int x=0; x<8; x++) {
-    			squares[y][x] = new Square(x, y, null);
+    	for (int x=0; x<8; x++) {
+    		for (int y=0; y<8; y++) {
+    			squares[x][y] = new Square(x, y, null);
     		}
     	}
     }

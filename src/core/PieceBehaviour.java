@@ -1,6 +1,9 @@
 package core;
 
+import core.Move;
+import core.Square;
 import core.pieces.Piece;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -85,45 +88,45 @@ public class PieceBehaviour {
         }
         int x = checkedSquare.getX();
         int y = checkedSquare.getY();
-        Move[] legalMoves = new Move[4];
-        int count = 0;
-        if (piece.getPlayer().isGoDown()) {
+        List<Move> legalMoves = new ArrayList<>();
+
+        if (piece.getColor().equals("Black")) {
+            // Sprawdź pierwszy ruch i ruchy do przodu
+            if (x == 1 && squares[x + 1][y].getPiece() == null && squares[x + 2][y].getPiece() == null) {
+                legalMoves.add(new Move(checkedSquare, squares[x + 2][y]));
+            }
             if (x < squares.length - 1 && squares[x + 1][y].getPiece() == null) {
-                legalMoves[count] = new Move(checkedSquare, squares[x + 1][y]);
-                count++;
-                if (!piece.getHasMoved() && squares[x + 2][y].getPiece() == null) {
-                    legalMoves[count] = new Move(checkedSquare, squares[x + 2][y]);
-                    count++;
-                }
+                legalMoves.add(new Move(checkedSquare, squares[x + 1][y]));
+            }
+
+            // Sprawdź bicie
+            if (x < squares.length - 1 && y < squares[0].length - 1 && squares[x + 1][y + 1].getPiece() != null) {
+                legalMoves.add(new Move(checkedSquare, squares[x + 1][y + 1]));
             }
             if (x < squares.length - 1 && y > 0 && squares[x + 1][y - 1].getPiece() != null) {
-                legalMoves[count] = new Move(checkedSquare, squares[x + 1][y - 1]);
-                count++;
-            }
-            if (x < squares.length - 1 && y < squares[0].length - 1 && squares[x + 1][y + 1].getPiece() != null) {
-                legalMoves[count] = new Move(checkedSquare, squares[x + 1][y + 1]);
-                count++;
+                legalMoves.add(new Move(checkedSquare, squares[x + 1][y - 1]));
             }
         } else {
+            // Sprawdź pierwszy ruch i ruchy do przodu
+            if (x == 6 && squares[x - 1][y].getPiece() == null && squares[x - 2][y].getPiece() == null) {
+                legalMoves.add(new Move(checkedSquare, squares[x - 2][y]));
+            }
             if (x > 0 && squares[x - 1][y].getPiece() == null) {
-                legalMoves[count] = new Move(checkedSquare, squares[x - 1][y]);
-                count++;
-                if (!piece.getHasMoved() && squares[x - 2][y].getPiece() == null) {
-                    legalMoves[count] = new Move(checkedSquare, squares[x - 2][y]);
-                    count++;
-                }
+                legalMoves.add(new Move(checkedSquare, squares[x - 1][y]));
+            }
+
+            // Sprawdź bicie
+            if (x > 0 && y < squares[0].length - 1 && squares[x - 1][y + 1].getPiece() != null) {
+                legalMoves.add(new Move(checkedSquare, squares[x - 1][y + 1]));
             }
             if (x > 0 && y > 0 && squares[x - 1][y - 1].getPiece() != null) {
-                legalMoves[count] = new Move(checkedSquare, squares[x - 1][y - 1]);
-                count++;
-            }
-            if (x > 0 && y < squares[0].length - 1 && squares[x - 1][y + 1].getPiece() != null) {
-                legalMoves[count] = new Move(checkedSquare, squares[x - 1][y + 1]);
-                count++;
+                legalMoves.add(new Move(checkedSquare, squares[x - 1][y - 1]));
             }
         }
-        return legalMoves;
+
+        return legalMoves.toArray(new Move[0]);
     }
+
 
     public static Move[] rookLegalMoves(Square checkedSquare, Square[][] squares) {
         Piece piece = checkedSquare.getPiece();
@@ -274,12 +277,12 @@ public class PieceBehaviour {
         if (piece == null || !piece.getName().equals("Queen")) {
             return null;
         }
-        Move[] legalMoves = new Move[56];
+        List<Move> legalMoves = new ArrayList<>();
         Move[] rookMoves = rookLegalMoves(checkedSquare, squares);
         Move[] bishopMoves = bishopLegalMoves(checkedSquare, squares);
-        System.arraycopy(rookMoves, 0, legalMoves, 0, rookMoves.length);
-        System.arraycopy(bishopMoves, 0, legalMoves, rookMoves.length, bishopMoves.length);
-        return legalMoves;
+        Collections.addAll(legalMoves, rookMoves);
+        Collections.addAll(legalMoves, bishopMoves);
+        return legalMoves.toArray(new Move[0]);
     }
 
     public static List<Move> passantLegalMoves(Square checkedSquare, Square[][] squares, Move lastMove) {

@@ -60,18 +60,44 @@ public class ChessboardGUI extends JFrame {
     private void handleSquareClick(SquareButton button) {
         Square square = button.getSquare();
         Piece piece = square.getPiece();
-        if (piece != null) {
-            if (piece.getColor().equals("WHITE")){
-                System.out.println("Clicked on white " + piece.getName() + " at " + square.getX() + ", " + square.getY());
-            }
-            else {
-                System.out.println("Clicked on black " + piece.getName() + " at " + square.getX() + ", " + square.getY());
 
+        // Clear all highlighted squares
+        clearHighlightedSquares();
+
+        if (piece != null) {
+            // Highlight legal moves for the clicked piece
+            highlightLegalMoves(square);
+
+            if (piece.getColor().equals("WHITE")) {
+                System.out.println("Clicked on white " + piece.getName() + " at " + square.getX() + ", " + square.getY());
+            } else {
+                System.out.println("Clicked on black " + piece.getName() + " at " + square.getX() + ", " + square.getY());
             }
         } else {
             System.out.println("Clicked on empty square at " + square.getX() + ", " + square.getY());
         }
     }
+    private void clearHighlightedSquares() {
+        // Clear all highlighted squares
+        for (int x = 0; x < 8; x++) {
+            for (int y = 0; y < 8; y++) {
+                squareButtons[x][y].setBackground((x + y) % 2 == 0 ? Color.WHITE : Color.GRAY);
+            }
+        }
+    }
+
+
+    private void highlightLegalMoves(Square startSquare) {
+        Piece piece = startSquare.getPiece();
+        Move[] legalMoves = PieceBehaviour.whateverLegalMovesLookup(startSquare, chessboard.getSquares());
+
+        // Highlight squares corresponding to legal moves
+        for (Move move : legalMoves) {
+            Square endSquare = move.getEndSquare();
+            squareButtons[endSquare.getX()][endSquare.getY()].setBackground(Color.YELLOW);
+        }
+    }
+
 
     private void updateBoard() {
         for (int x = 0; x < 8; x++) {
