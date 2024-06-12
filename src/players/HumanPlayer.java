@@ -4,7 +4,7 @@ import core.Chessboard;
 import core.Square;
 import core.pieces.Piece;
 import core.pieces.*;
-import enums.Color;
+import enums.PieceColor;
 import enums.PlayerType;
 
 /**
@@ -14,7 +14,7 @@ import enums.PlayerType;
  */
 public class HumanPlayer implements Player {
     private String name;
-    private Color color;
+    private PieceColor pieceColor;
     private PlayerType playerType;
     private boolean goDown;
 
@@ -24,23 +24,23 @@ public class HumanPlayer implements Player {
     public HumanPlayer() {}
 
     /**
-     * Constructs a new {@code HumanPlayer} with the specified name and color.
+     * Constructs a new {@code HumanPlayer} with the specified name and pieceColor.
      *
      * @param name  the name of the human player
-     * @param color the color of the human player's pieces
+     * @param pieceColor the pieceColor of the human player's pieces
      */
-    public HumanPlayer(String name, Color color) {
+    public HumanPlayer(String name, PieceColor pieceColor) {
         this.name = name;
-        this.color = color;
+        this.pieceColor = pieceColor;
     }
 
     /**
-     * Retrieves the color associated with this human player.
+     * Retrieves the pieceColor associated with this human player.
      *
-     * @return the color of the human player's pieces
+     * @return the pieceColor of the human player's pieces
      */
-    public Color getColor() {
-        return color;
+    public PieceColor getColor() {
+        return pieceColor;
     }
 
     /**

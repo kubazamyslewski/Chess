@@ -3,6 +3,7 @@ package core;
 import core.pieces.King;
 import core.pieces.Pawn;
 import core.pieces.Piece;
+import enums.PieceColor;
 import networking.Client;
 import players.NetworkPlayer;
 import players.Player;
@@ -11,7 +12,6 @@ import players.PlayerFactory;
 import java.io.IOException;
 import java.util.Scanner;
 
-import enums.Color;
 import enums.PlayerType;
 
 import java.util.ArrayList;
@@ -47,8 +47,8 @@ public class Game extends GameLogic {
     protected final void init(){
         board = new Chessboard();
         board.setSquares();
-//        playerWhite = PlayerFactory.createPlayer(PlayerType.getPlayerType(0), "1", Color.WHITE);
-//        playerBlack = PlayerFactory.createPlayer(PlayerType.getPlayerType(0), "2", Color.BLACK);
+//        playerWhite = PlayerFactory.createPlayer(PlayerType.getPlayerType(0), "1", PieceColor.WHITE);
+//        playerBlack = PlayerFactory.createPlayer(PlayerType.getPlayerType(0), "2", PieceColor.BLACK);
 
         setWhitePlayerTurn(true);
         setIsEnPassant(false);
@@ -72,7 +72,7 @@ public class Game extends GameLogic {
         systemin.nextLine();
         System.out.println("Podaj nazwę gracza");
         playername = systemin.nextLine();
-        playerWhite = PlayerFactory.createPlayer(PlayerType.getPlayerType(type), playername, Color.WHITE);
+        playerWhite = PlayerFactory.createPlayer(PlayerType.getPlayerType(type), playername, PieceColor.WHITE);
         System.out.println();
         System.out.println("Konfiguracja czarnego gracza");
         System.out.println("Podaj typ czarnego gracza. Do wyboru:\n 0 - człowiek\n 1 - człowiek internetowy\n 2 - komputer");
@@ -80,7 +80,7 @@ public class Game extends GameLogic {
         systemin.nextLine();
         System.out.println("Podaj nazwę gracza");
         playername = systemin.nextLine();
-        playerBlack = PlayerFactory.createPlayer(PlayerType.getPlayerType(type), playername, Color.BLACK);
+        playerBlack = PlayerFactory.createPlayer(PlayerType.getPlayerType(type), playername, PieceColor.BLACK);
         
         board.setPiecesAtStart(playerWhite, playerBlack);
         type = 0;

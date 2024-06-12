@@ -4,12 +4,7 @@ import core.pieces.Pawn;
 import core.pieces.Piece;
 import players.Player;
 
-import java.awt.*;
-import java.util.ArrayList;
-
-import core.pieces.King;
-import core.pieces.Piece;
-import enums.Color;
+import enums.PieceColor;
 
 /**
  * This class contains static methods that are checking game state using 8x8 table from chessboard
@@ -37,7 +32,7 @@ public class GameLogic {
     }
 
     public static boolean isTurnCompilantWithColor(Game game, Player playerChecked, Player playerChecking, Square[][] squares) {
-        if ((game.isWhitePlayerTurn() && (playerChecked.getColor() == Color.WHITE)) || (!game.isWhitePlayerTurn() && (playerChecked.getColor() == Color.BLACK))) {
+        if ((game.isWhitePlayerTurn() && (playerChecked.getColor() == PieceColor.WHITE)) || (!game.isWhitePlayerTurn() && (playerChecked.getColor() == PieceColor.BLACK))) {
             return true;
         }
         return false;
@@ -89,7 +84,7 @@ public class GameLogic {
      * @return
      */
     public static boolean isCheck(Player playerChecked, Player playerChecking, Square[][] squares) {
-//    	Color colorChecked = playerChecked.getColor();
+//    	PieceColor colorChecked = playerChecked.getColor();
 // colorChecking = playerChecking.getColor();
         for (Square[] checkingRow : squares) {
             for (Square checkingSquare : checkingRow) {
