@@ -108,7 +108,7 @@ public class Chessboard implements Serializable{
     	
     	if (move.isPromotion()) {
     		endSquare.setPiece(move.getPromotionPiece());
-		}
+			}
     	
     }
 
