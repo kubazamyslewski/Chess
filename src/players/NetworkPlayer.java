@@ -3,7 +3,7 @@ package players;
 import core.Chessboard;
 import core.Square;
 import core.pieces.*;
-import enums.Color;
+import enums.PieceColor;
 import enums.PlayerType;
 
 /**
@@ -13,7 +13,7 @@ import enums.PlayerType;
  */
 public class NetworkPlayer implements Player {
     String name;
-    Color color;
+    PieceColor pieceColor;
     PlayerType playerType;
     boolean goDown;
 
@@ -23,23 +23,23 @@ public class NetworkPlayer implements Player {
     public NetworkPlayer() {}
 
     /**
-     * Constructs a new NetworkPlayer with the specified name and color.
+     * Constructs a new NetworkPlayer with the specified name and pieceColor.
      *
      * @param name  the name of the network player
-     * @param color the color of the network player's pieces
+     * @param pieceColor the pieceColor of the network player's pieces
      */
-    public NetworkPlayer(String name, Color color) {
+    public NetworkPlayer(String name, PieceColor pieceColor) {
     	this.name = name;
-        this.color = color;
+        this.pieceColor = pieceColor;
     }
 
     /**
-     * Retrieves the color associated with this network player.
+     * Retrieves the pieceColor associated with this network player.
      *
-     * @return the color of the network player's pieces
+     * @return the pieceColor of the network player's pieces
      */
-    public Color getColor() {
-        return color;
+    public PieceColor getColor() {
+        return pieceColor;
     }
 
     /**

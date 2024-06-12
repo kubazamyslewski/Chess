@@ -3,7 +3,7 @@ package players;
 import core.Chessboard;
 import core.Square;
 import core.pieces.*;
-import enums.Color;
+import enums.PieceColor;
 import enums.PlayerType;
 
 /**
@@ -13,7 +13,7 @@ import enums.PlayerType;
  */
 public class ComputerPlayer implements Player {
     private String name;
-    private Color color;
+    private PieceColor pieceColor;
     private PlayerType playerType;
     private boolean goDown;
 
@@ -23,24 +23,24 @@ public class ComputerPlayer implements Player {
     public ComputerPlayer() {}
 
     /**
-     * Constructs a new ComputerPlayer with the specified name and color.
+     * Constructs a new ComputerPlayer with the specified name and pieceColor.
      *
      * @param name  the name of the computer player
-     * @param color the color of the computer player's pieces (WHITE or BLACK)
+     * @param pieceColor the pieceColor of the computer player's pieces (WHITE or BLACK)
      */
-    public ComputerPlayer(String name, Color color) {
+    public ComputerPlayer(String name, PieceColor pieceColor) {
         this.name = name;
-        this.color = color;
+        this.pieceColor = pieceColor;
     }
 
     /**
-     * Retrieves the color associated with this computer player.
+     * Retrieves the pieceColor associated with this computer player.
      *
-     * @return the color of the computer player's pieces
+     * @return the pieceColor of the computer player's pieces
      */
-    public Color getColor() {
+    public PieceColor getColor() {
 
-        return color;
+        return pieceColor;
     }
 
     /**
