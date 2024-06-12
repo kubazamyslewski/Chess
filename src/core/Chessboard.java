@@ -89,8 +89,19 @@ public class Chessboard implements Serializable{
     	//White king
     	King WhiteKing = new King(playerWhite);
     	squares[4][7].setPiece(WhiteKing);
-    	
-    	
+
+		//White pawns
+		for (int i = 0; i <= 7; i++) {
+			Pawn WhitePawn = new Pawn(playerWhite);
+			squares[i][6].setPiece(WhitePawn);
+		}
+
+		//Black pawns
+		for (int i = 0; i <= 7; i++) {
+			Pawn BlackPawn = new Pawn(playerBlack);
+			squares[i][1].setPiece(BlackPawn);
+		}
+
     }
 
     /**
