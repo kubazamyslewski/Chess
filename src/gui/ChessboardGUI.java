@@ -1,15 +1,14 @@
 package gui;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import core.*;
 import enums.PieceColor;
 import players.HumanPlayer;
 import players.Player;
 import core.pieces.*;
-
 
 public class ChessboardGUI extends JFrame {
     private Chessboard chessboard;
@@ -60,10 +59,50 @@ public class ChessboardGUI extends JFrame {
     private void handleSquareClick(SquareButton button) {
         Square square = button.getSquare();
         Piece piece = square.getPiece();
+        clearHighlightedSquares();
         if (piece != null) {
             System.out.println("Clicked on " + piece.getName() + " at " + square.getX() + ", " + square.getY());
+            Move[] legalMoves = getLegalMovesForPiece(piece, square);
+            highlightLegalMoves(legalMoves);
         } else {
             System.out.println("Clicked on empty square at " + square.getX() + ", " + square.getY());
+        }
+    }
+
+    private Move[] getLegalMovesForPiece(Piece piece, Square square) {
+        switch (piece.getName().toLowerCase()) {
+            case "pawn":
+                return PieceBehaviour.pawnLegalMoves(square, chessboard.getSquares());
+            case "rook":
+                return PieceBehaviour.rookLegalMoves(square, chessboard.getSquares());
+            case "knight":
+                return PieceBehaviour.knightLegalMoves(square, chessboard.getSquares());
+            case "bishop":
+                return PieceBehaviour.bishopLegalMoves(square, chessboard.getSquares());
+            case "queen":
+                return PieceBehaviour.queenLegalMoves(square, chessboard.getSquares());
+            case "king":
+                return PieceBehaviour.kingLegalMoves(square, chessboard.getSquares());
+            default:
+                return new Move[0];
+        }
+    }
+
+    private void highlightLegalMoves(Move[] legalMoves) {
+        for (Move move : legalMoves) {
+            if (move != null) { // Sprawdzenie, czy ruch nie jest nullem
+                Square endSquare = move.getEndSquare();
+                SquareButton button = squareButtons[endSquare.getX()][endSquare.getY()];
+                button.highlight();
+            }
+        }
+    }
+
+    private void clearHighlightedSquares() {
+        for (int x = 0; x < 8; x++) {
+            for (int y = 0; y < 8; y++) {
+                squareButtons[x][y].clearHighlight();
+            }
         }
     }
 
@@ -81,9 +120,11 @@ public class ChessboardGUI extends JFrame {
 
     private class SquareButton extends JButton {
         private Square square;
+        private boolean isHighlighted;
 
         public SquareButton(Square square) {
             this.square = square;
+            this.isHighlighted = false;
             updateIcon();
         }
 
@@ -99,12 +140,31 @@ public class ChessboardGUI extends JFrame {
                 } else {
                     setIcon(new ImageIcon("Pictures/black" + piece.getName() + ".png"));
                 }
-
             } else {
                 setIcon(null);
             }
             setBackground((square.getX() + square.getY()) % 2 == 0 ? Color.WHITE : Color.GRAY);
+            if (isHighlighted) {
+                addHighlight();
+            }
+        }
+
+        public void highlight() {
+            isHighlighted = true;
+            addHighlight();
+        }
+
+        public void clearHighlight() {
+            isHighlighted = false;
+            removeHighlight();
+        }
+
+        private void addHighlight() {
+            setBackground(Color.YELLOW);
+        }
+
+        private void removeHighlight() {
+            setBackground((square.getX() + square.getY()) % 2 == 0 ? Color.WHITE : Color.GRAY);
         }
     }
 }
-

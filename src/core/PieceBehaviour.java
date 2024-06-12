@@ -6,39 +6,53 @@ import java.util.Collections;
 import java.util.List;
 
 public class PieceBehaviour {
-	
-	public static Move[] whateverLegalMovesLookup(Square checkedSquare, Square[][] squares) {
-		
-		if (pawnLegalMoves(checkedSquare, squares) != null) {
-			return pawnLegalMoves(checkedSquare, squares);
-		}
-		
-		if (knightLegalMoves(checkedSquare, squares) != null) {
-			return knightLegalMoves(checkedSquare, squares);
-		}
-		
-		if (bishopLegalMoves(checkedSquare, squares) != null) {
-			return bishopLegalMoves(checkedSquare, squares);
-		}
-		
-		if (rookLegalMoves(checkedSquare, squares) != null) {
-			return rookLegalMoves(checkedSquare, squares);
-		}
-		
-		if (bishopLegalMoves(checkedSquare, squares) != null) {
-			return bishopLegalMoves(checkedSquare, squares);
-		}
-		
-		if (queenLegalMoves(checkedSquare, squares) != null) {
-			return queenLegalMoves(checkedSquare, squares);
-		}
-		
-		if (kingLegalMoves(checkedSquare, squares) != null) {
-			return kingLegalMoves(checkedSquare, squares);
-		}
-		return null;
-		
-	}
+
+    public static Move[] whateverLegalMovesLookup(Square checkedSquare, Square[][] squares) {
+        Move[] moves;
+
+        if ((moves = pawnLegalMoves(checkedSquare, squares)) != null) {
+            return trimMoveArray(moves);
+        }
+
+        if ((moves = knightLegalMoves(checkedSquare, squares)) != null) {
+            return trimMoveArray(moves);
+        }
+
+        if ((moves = bishopLegalMoves(checkedSquare, squares)) != null) {
+            return trimMoveArray(moves);
+        }
+
+        if ((moves = rookLegalMoves(checkedSquare, squares)) != null) {
+            return trimMoveArray(moves);
+        }
+
+        if ((moves = queenLegalMoves(checkedSquare, squares)) != null) {
+            return trimMoveArray(moves);
+        }
+
+        if ((moves = kingLegalMoves(checkedSquare, squares)) != null) {
+            return trimMoveArray(moves);
+        }
+
+        return new Move[0];
+    }
+
+    private static Move[] trimMoveArray(Move[] moves) {
+        int count = 0;
+        for (Move move : moves) {
+            if (move != null) {
+                count++;
+            }
+        }
+        Move[] trimmedMoves = new Move[count];
+        int index = 0;
+        for (Move move : moves) {
+            if (move != null) {
+                trimmedMoves[index++] = move;
+            }
+        }
+        return trimmedMoves;
+    }
 
     public static Move[] kingLegalMoves(Square checkedSquare, Square[][] squares) {
         Piece piece = checkedSquare.getPiece();
