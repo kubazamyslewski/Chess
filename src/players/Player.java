@@ -2,10 +2,9 @@ package players;
 
 import core.Chessboard;
 import core.pieces.Piece;
-import enums.Color;
+import enums.PieceColor;
 import enums.PlayerType;
 
-import java.awt.*;
 import java.io.Serializable;
 /**
  * The Player interface represents a player in a chess game.
@@ -20,7 +19,7 @@ public interface Player extends Serializable {
      *
      * @return the color of the player WHITE or BLACK
      */
-    public Color getColor();
+    public PieceColor getColor();
 
     /**
      * Retrieves the name of the player.
