@@ -1,9 +1,9 @@
 package gui;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 import core.*;
 import enums.PieceColor;
@@ -11,10 +11,9 @@ import players.HumanPlayer;
 import players.Player;
 import core.pieces.*;
 
-
 public class ChessboardGUI extends JFrame {
 
-    //attributes required for handling a move
+    // attributes required for handling a move
     Move[] possibleMoves;
     private Boolean movePrep = false;
     private Boolean isWhiteTurn = true;
@@ -23,6 +22,7 @@ public class ChessboardGUI extends JFrame {
     private Player playerWhite;
     private Player playerBlack;
     private JPanel boardPanel;
+    private JPanel mainPanel;
     private JLabel statusLabel;
     private SquareButton[][] squareButtons;
 
@@ -36,8 +36,10 @@ public class ChessboardGUI extends JFrame {
         chessboard.setPiecesAtStart(playerWhite, playerBlack);
 
         setTitle("Chess Game");
-        setSize(800, 800);
+        setSize(900, 900);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        mainPanel = new JPanel(new BorderLayout());
         boardPanel = new JPanel(new GridLayout(8, 8));
         squareButtons = new SquareButton[8][8];
 
@@ -45,9 +47,41 @@ public class ChessboardGUI extends JFrame {
         statusLabel.setHorizontalAlignment(SwingConstants.CENTER);
         initializeBoard();
 
-        add(statusLabel, BorderLayout.NORTH);
-        add(boardPanel, BorderLayout.CENTER);
+        mainPanel.add(statusLabel, BorderLayout.NORTH);
+        mainPanel.add(createLabeledBoard(), BorderLayout.CENTER);
+
+        add(mainPanel);
         setVisible(true);
+    }
+
+    private JPanel createLabeledBoard() {
+        JPanel panelWithLabels = new JPanel(new BorderLayout());
+
+        JPanel leftColumnLabels = new JPanel(new GridLayout(8, 1));
+        JPanel rightColumnLabels = new JPanel(new GridLayout(8, 1));
+        for (char c = 'A'; c <= 'H'; c++) {
+            JLabel leftLabel = new JLabel(String.valueOf(c), SwingConstants.CENTER);
+            JLabel rightLabel = new JLabel(String.valueOf(c), SwingConstants.CENTER);
+            leftColumnLabels.add(leftLabel);
+            rightColumnLabels.add(rightLabel);
+        }
+
+        JPanel topRowLabels = new JPanel(new GridLayout(1, 8));
+        JPanel bottomRowLabels = new JPanel(new GridLayout(1, 8));
+        for (int i = 8; i >= 1; i--) {
+            JLabel topLabel = new JLabel(String.valueOf(i), SwingConstants.CENTER);
+            JLabel bottomLabel = new JLabel(String.valueOf(i), SwingConstants.CENTER);
+            topRowLabels.add(topLabel);
+            bottomRowLabels.add(bottomLabel);
+        }
+
+        panelWithLabels.add(leftColumnLabels, BorderLayout.WEST);
+        panelWithLabels.add(rightColumnLabels, BorderLayout.EAST);
+        panelWithLabels.add(topRowLabels, BorderLayout.NORTH);
+        panelWithLabels.add(bottomRowLabels, BorderLayout.SOUTH);
+        panelWithLabels.add(boardPanel, BorderLayout.CENTER);
+
+        return panelWithLabels;
     }
 
     private void initializeBoard() {
@@ -110,7 +144,6 @@ public class ChessboardGUI extends JFrame {
         }
     }
 
-
     private void clearHighlightedSquares() {
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
@@ -122,7 +155,7 @@ public class ChessboardGUI extends JFrame {
     private Move[] highlightLegalMoves(Square startSquare) {
         Piece piece = startSquare.getPiece();
         Move[] movesArray;
-        switch(piece.getName()) {
+        switch (piece.getName()) {
             case "Rook":
                 movesArray = PieceBehaviour.rookLegalMoves(startSquare, chessboard.getSquares());
                 break;
@@ -166,6 +199,7 @@ public class ChessboardGUI extends JFrame {
     }
 
     private void checkGameState() {
+        //TODO: add check / mate check
     }
 
     private void resetGame() {
