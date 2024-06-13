@@ -4,7 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import core.*;
 import enums.PieceColor;
 import players.HumanPlayer;
@@ -36,10 +35,10 @@ public class ChessboardGUI extends JFrame {
         chessboard.setPiecesAtStart(playerWhite, playerBlack);
 
         setTitle("Chess Game");
-        setSize(900, 900);
+        setSize(1024, 1000);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        mainPanel = new JPanel(new BorderLayout());
+        mainPanel = new JPanel(new GridBagLayout());
         boardPanel = new JPanel(new GridLayout(8, 8));
         squareButtons = new SquareButton[8][8];
 
@@ -47,8 +46,24 @@ public class ChessboardGUI extends JFrame {
         statusLabel.setHorizontalAlignment(SwingConstants.CENTER);
         initializeBoard();
 
-        mainPanel.add(statusLabel, BorderLayout.NORTH);
-        mainPanel.add(createLabeledBoard(), BorderLayout.CENTER);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.anchor = GridBagConstraints.CENTER;
+        mainPanel.add(statusLabel, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = 1;
+        gbc.fill = GridBagConstraints.BOTH;
+        mainPanel.add(createLabeledBoard(), gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        gbc.fill = GridBagConstraints.VERTICAL;
+        mainPanel.add(createButtonPanel(), gbc);
 
         add(mainPanel);
         setVisible(true);
@@ -84,7 +99,61 @@ public class ChessboardGUI extends JFrame {
         return panelWithLabels;
     }
 
+    private JPanel createButtonPanel() {
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
+
+        JButton newGameButton = new JButton("Nowa gra");
+        JButton resignButton = new JButton("Poddaj się");
+        JButton offerDrawButton = new JButton("Zaproponuj remis");
+
+        newGameButton.setMaximumSize(new Dimension(200, 50));
+        resignButton.setMaximumSize(new Dimension(200, 50));
+        offerDrawButton.setMaximumSize(new Dimension(200, 50));
+
+        resignButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int response = JOptionPane.showConfirmDialog(null, "Czy na pewno chcesz się poddać?", "Poddaj się", JOptionPane.YES_NO_OPTION);
+                if (response == JOptionPane.YES_OPTION) {
+                    JOptionPane.showMessageDialog(null, (isWhiteTurn ? "Białe" : "Czarne") + " poddają się!");
+                }
+            }
+        });
+
+        newGameButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int response = JOptionPane.showConfirmDialog(null, "Czy na pewno chcesz rozpocząć nową grę?", "Nowa gra", JOptionPane.YES_NO_OPTION);
+                if (response == JOptionPane.YES_OPTION) {
+                    resetGame();
+                }
+            }
+        });
+
+        offerDrawButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int response = JOptionPane.showConfirmDialog(null, (isWhiteTurn ? "Białe" : "Czarne") + " proponują remis. Czy przeciwnik się zgadza?", "Zaproponuj remis", JOptionPane.YES_NO_OPTION);
+                if (response == JOptionPane.YES_OPTION) {
+                    JOptionPane.showMessageDialog(null, "Gra zakończona remisem.");
+                }
+            }
+        });
+
+        buttonPanel.add(Box.createVerticalStrut(20));
+        buttonPanel.add(newGameButton);
+        buttonPanel.add(Box.createVerticalStrut(20));
+        buttonPanel.add(resignButton);
+        buttonPanel.add(Box.createVerticalStrut(20));
+        buttonPanel.add(offerDrawButton);
+        buttonPanel.add(Box.createVerticalGlue());
+
+        return buttonPanel;
+    }
+
     private void initializeBoard() {
+        boardPanel.removeAll();
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
                 Square square = chessboard.getSquare(x, y);
@@ -100,6 +169,8 @@ public class ChessboardGUI extends JFrame {
                 boardPanel.add(button);
             }
         }
+        boardPanel.revalidate();
+        boardPanel.repaint();
         updateBoard();
     }
 
@@ -203,9 +274,10 @@ public class ChessboardGUI extends JFrame {
     }
 
     private void resetGame() {
+        chessboard = new Chessboard();
         chessboard.setSquares();
         chessboard.setPiecesAtStart(playerWhite, playerBlack);
-        updateBoard();
+        initializeBoard();
         isWhiteTurn = true;
         statusLabel.setText("Turn: White");
     }
