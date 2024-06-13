@@ -65,20 +65,18 @@ public class PieceBehaviour {
         int x = checkedSquare.getX();
         int y = checkedSquare.getY();
         int[][] directions = {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}};
-        Move[] legalMoves = new Move[8];
-        int count = 0;
+        ArrayList<Move> legalMoves = new ArrayList<>();
         for (int[] dir : directions) {
             int newX = x + dir[0];
             int newY = y + dir[1];
             if (newX >= 0 && newX < squares.length && newY >= 0 && newY < squares[0].length) {
                 Piece targetPiece = squares[newX][newY].getPiece();
                 if (targetPiece == null || targetPiece.getPlayer() != piece.getPlayer()) {
-                    legalMoves[count] = new Move(checkedSquare, squares[newX][newY]);
-                    count++;
+                    legalMoves.add(new Move(checkedSquare, squares[newX][newY]));
                 }
             }
         }
-        return legalMoves;
+        return legalMoves.toArray(new Move[0]);
     }
 
     public static Move[] pawnLegalMoves(Square checkedSquare, Square[][] squares) {
