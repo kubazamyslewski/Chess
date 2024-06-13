@@ -114,11 +114,6 @@ public class Chessboard implements Serializable{
 				Pawn BlackPawn = new Pawn(playerBlack);
 				squares[i][1].setPiece(BlackPawn);
 			}
-
-			//test
-			Queen testQueen = new Queen(playerWhite);
-			squares[2][2].setPiece(WhiteQueen);
-
     }
 
     /**
