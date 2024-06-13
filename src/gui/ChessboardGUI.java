@@ -4,6 +4,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import core.*;
 import enums.PieceColor;
 import players.HumanPlayer;
@@ -68,6 +72,8 @@ public class ChessboardGUI extends JFrame {
         gbc.fill = GridBagConstraints.VERTICAL;
         mainPanel.add(createButtonPanel(), gbc);
 
+        addSaveButton(mainPanel);
+
         add(mainPanel);
         setVisible(true);
     }
@@ -101,6 +107,65 @@ public class ChessboardGUI extends JFrame {
 
         return panelWithLabels;
     }
+
+    private void addSaveButton(JPanel buttonPanel) {
+        JButton saveButton = new JButton("Zapisz grę");
+        saveButton.setMaximumSize(new Dimension(200, 50));
+
+        saveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    File directory = new File("src/gry");
+                    if (!directory.exists()) {
+                        directory.mkdirs();
+                    }
+
+                    File file = new File(directory, "saved_game.txt");
+                    FileWriter writer = new FileWriter(file);
+
+                    // Assuming we have a method to get the current game state as a string
+                    String gameState = getCurrentGameState();
+
+                    writer.write(gameState);
+                    writer.close();
+
+                    JOptionPane.showMessageDialog(null, "Gra została zapisana!", "Zapis gry", JOptionPane.INFORMATION_MESSAGE);
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                    JOptionPane.showMessageDialog(null, "Wystąpił błąd podczas zapisywania gry.", "Błąd zapisu", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
+        buttonPanel.add(Box.createVerticalStrut(20));
+        buttonPanel.add(saveButton);
+    }
+
+    private String getCurrentGameState() {
+        StringBuilder gameStateBuilder = new StringBuilder();
+
+        for (int x = 0; x < 8; x++) {
+            for (int y = 0; y < 8; y++) {
+                Square square = chessboard.getSquare(x, y);
+                Piece piece = square.getPiece();
+                /*switch (piece){
+                    //case :
+
+                }*/
+
+                if (piece == null) {
+                    gameStateBuilder.append("0 ");
+                }
+            }
+            gameStateBuilder.append("\n");
+        }
+
+        return gameStateBuilder.toString();
+    }
+
+
+
 
     private JPanel createButtonPanel() {
         JPanel buttonPanel = new JPanel();
