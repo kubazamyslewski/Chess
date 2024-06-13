@@ -3,6 +3,7 @@ package core;
 import java.io.Serializable;
 
 import core.pieces.*;
+import enums.PieceColor;
 import players.HumanPlayer;
 import players.Player;
 
@@ -50,10 +51,10 @@ public class Chessboard implements Serializable{
      */
     public void setPiecesAtStart(Player playerWhite, Player playerBlack) {
     	//initialize Black rooks
-    	Rook westernBlackRook = new Rook(playerBlack);
-    	squares[0][0].setPiece(westernBlackRook);
-    	Rook easternBlackRook = new Rook(playerBlack);
-    	squares[7][0].setPiece(easternBlackRook);
+    	Rook topBlackRook = new Rook(playerBlack);
+    	squares[0][0].setPiece(topBlackRook);
+    	Rook bottomBlackRook = new Rook(playerBlack);
+    	squares[7][0].setPiece(bottomBlackRook);
     	
     	//Black knights
     	Knight westernBlackKnight = new Knight(playerBlack);
@@ -77,10 +78,10 @@ public class Chessboard implements Serializable{
     	
     	
     	//initialize White rooks
-    	Rook westernWhiteRook = new Rook(playerWhite);
-    	squares[0][7].setPiece(westernWhiteRook);
-    	Rook easternWhiteRook = new Rook(playerWhite);
-    	squares[7][7].setPiece(easternWhiteRook);
+    	Rook topWhiteRook = new Rook(playerWhite);
+    	squares[0][7].setPiece(topWhiteRook);
+    	Rook bottomWhiteRook = new Rook(playerWhite);
+    	squares[7][7].setPiece(bottomWhiteRook);
     	
     	//White knights
     	Knight westernWhiteKnight = new Knight(playerWhite);
@@ -128,7 +129,11 @@ public class Chessboard implements Serializable{
     public void makeMove(Move move){
     	Square startSquare = move.getStartSquare();
     	Square endSquare = move.getEndSquare();
-    	
+
+		if(startSquare.getPiece() instanceof King || startSquare.getPiece() instanceof Rook){
+			startSquare.getPiece().setHasMoved(true);
+		}
+
     	endSquare.setPiece(null);
     	endSquare.setPiece(startSquare.getPiece());
     	startSquare.setPiece(null);
@@ -139,10 +144,9 @@ public class Chessboard implements Serializable{
     	
     }
 
-    
+
 
     public Square[][] getSquares() {
         return squares;
     }
-
 }
