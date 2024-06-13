@@ -42,7 +42,7 @@ public class ChessboardGUI extends JFrame {
         chessboard.setPiecesAtStart(playerWhite, playerBlack);
 
         setTitle("Szachy");
-        setSize(1024, 1000);
+        setSize(1024, 950);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         mainPanel = new JPanel(new GridBagLayout());
@@ -71,8 +71,6 @@ public class ChessboardGUI extends JFrame {
         gbc.gridy = 1;
         gbc.fill = GridBagConstraints.VERTICAL;
         mainPanel.add(createButtonPanel(), gbc);
-
-        addSaveButton(mainPanel);
 
         add(mainPanel);
         setVisible(true);
@@ -108,39 +106,6 @@ public class ChessboardGUI extends JFrame {
         return panelWithLabels;
     }
 
-    private void addSaveButton(JPanel buttonPanel) {
-        JButton saveButton = new JButton("Zapisz grę");
-        saveButton.setMaximumSize(new Dimension(200, 50));
-
-        saveButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    File directory = new File("src/gry");
-                    if (!directory.exists()) {
-                        directory.mkdirs();
-                    }
-
-                    File file = new File(directory, "saved_game.txt");
-                    FileWriter writer = new FileWriter(file);
-
-                    // Assuming we have a method to get the current game state as a string
-                    String gameState = getCurrentGameState();
-
-                    writer.write(gameState);
-                    writer.close();
-
-                    JOptionPane.showMessageDialog(null, "Gra została zapisana!", "Zapis gry", JOptionPane.INFORMATION_MESSAGE);
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                    JOptionPane.showMessageDialog(null, "Wystąpił błąd podczas zapisywania gry.", "Błąd zapisu", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        });
-
-        buttonPanel.add(Box.createVerticalStrut(20));
-        buttonPanel.add(saveButton);
-    }
 
     private String getCurrentGameState() {
         StringBuilder gameStateBuilder = new StringBuilder();
@@ -164,9 +129,6 @@ public class ChessboardGUI extends JFrame {
         return gameStateBuilder.toString();
     }
 
-
-
-
     private JPanel createButtonPanel() {
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
@@ -174,10 +136,12 @@ public class ChessboardGUI extends JFrame {
         JButton newGameButton = new JButton("Nowa gra");
         JButton resignButton = new JButton("Poddaj się");
         JButton offerDrawButton = new JButton("Zaproponuj remis");
+        JButton saveButton = new JButton("Zapisz grę");
 
         newGameButton.setMaximumSize(new Dimension(200, 50));
         resignButton.setMaximumSize(new Dimension(200, 50));
         offerDrawButton.setMaximumSize(new Dimension(200, 50));
+        saveButton.setMaximumSize(new Dimension(200, 50));
 
         resignButton.addActionListener(new ActionListener() {
             @Override
@@ -209,12 +173,40 @@ public class ChessboardGUI extends JFrame {
             }
         });
 
+        saveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    File directory = new File("src/gry");
+                    if (!directory.exists()) {
+                        directory.mkdirs();
+                    }
+
+                    File file = new File(directory, "saved_game.txt");
+                    FileWriter writer = new FileWriter(file);
+
+                    // Assuming we have a method to get the current game state as a string
+                    String gameState = getCurrentGameState();
+
+                    writer.write(gameState);
+                    writer.close();
+
+                    JOptionPane.showMessageDialog(null, "Gra została zapisana!", "Zapis gry", JOptionPane.INFORMATION_MESSAGE);
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                    JOptionPane.showMessageDialog(null, "Wystąpił błąd podczas zapisywania gry.", "Błąd zapisu", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
         buttonPanel.add(Box.createVerticalStrut(20));
         buttonPanel.add(newGameButton);
         buttonPanel.add(Box.createVerticalStrut(20));
         buttonPanel.add(resignButton);
         buttonPanel.add(Box.createVerticalStrut(20));
         buttonPanel.add(offerDrawButton);
+        buttonPanel.add(Box.createVerticalStrut(20));
+        buttonPanel.add(saveButton);
         buttonPanel.add(Box.createVerticalGlue());
 
         return buttonPanel;
