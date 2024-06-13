@@ -116,7 +116,7 @@ public class ChessboardGUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 int response = JOptionPane.showConfirmDialog(null, "Czy na pewno chcesz się poddać?", "Poddaj się", JOptionPane.YES_NO_OPTION);
                 if (response == JOptionPane.YES_OPTION) {
-                    JOptionPane.showMessageDialog(null, (isWhiteTurn ? "Białe" : "Czarne") + " poddają się!");
+                    endGame((isWhiteTurn ? "Białe" : "Czarne") + " poddały się!");
                 }
             }
         });
@@ -136,7 +136,7 @@ public class ChessboardGUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 int response = JOptionPane.showConfirmDialog(null, (isWhiteTurn ? "Białe" : "Czarne") + " proponują remis. Czy przeciwnik się zgadza?", "Zaproponuj remis", JOptionPane.YES_NO_OPTION);
                 if (response == JOptionPane.YES_OPTION) {
-                    JOptionPane.showMessageDialog(null, "Gra zakończona remisem.");
+                    endGame("Gra zakończona remisem.");
                 }
             }
         });
@@ -152,6 +152,17 @@ public class ChessboardGUI extends JFrame {
         return buttonPanel;
     }
 
+    private void endGame(String message) {
+        statusLabel.setText(message);
+        for (int x = 0; x < 8; x++) {
+            for (int y = 0; y < 8; y++) {
+                squareButtons[x][y].setEnabled(false);
+                squareButtons[x][y].updateIcon();
+            }
+        }
+    }
+
+
     private void initializeBoard() {
         boardPanel.removeAll();
         for (int x = 0; x < 8; x++) {
@@ -159,12 +170,7 @@ public class ChessboardGUI extends JFrame {
                 Square square = chessboard.getSquare(x, y);
                 SquareButton button = new SquareButton(square);
                 button.setPreferredSize(new Dimension(100, 100));
-                button.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        handleSquareClick(button);
-                    }
-                });
+                button.addActionListener(e -> handleSquareClick(button));
                 squareButtons[x][y] = button;
                 boardPanel.add(button);
             }
