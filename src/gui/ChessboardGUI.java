@@ -16,6 +16,9 @@ public class ChessboardGUI extends JFrame {
     Move[] possibleMoves;
     private Boolean movePrep = false;
     private Boolean isWhiteTurn = true;
+    //TODO: method to check checkmate/stalemate
+    private boolean isCheckmate = false;
+    private boolean isStalemate = false;
 
     private Chessboard chessboard;
     private Player playerWhite;
@@ -34,7 +37,7 @@ public class ChessboardGUI extends JFrame {
 
         chessboard.setPiecesAtStart(playerWhite, playerBlack);
 
-        setTitle("Chess Game");
+        setTitle("Szachy");
         setSize(1024, 1000);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -42,7 +45,7 @@ public class ChessboardGUI extends JFrame {
         boardPanel = new JPanel(new GridLayout(8, 8));
         squareButtons = new SquareButton[8][8];
 
-        statusLabel = new JLabel("Turn: White");
+        statusLabel = new JLabel("Ruch: Białych");
         statusLabel.setHorizontalAlignment(SwingConstants.CENTER);
         initializeBoard();
 
@@ -272,12 +275,17 @@ public class ChessboardGUI extends JFrame {
 
     private void switchTurn() {
         isWhiteTurn = !isWhiteTurn;
-        statusLabel.setText("Turn: " + (isWhiteTurn ? "White" : "Black"));
+        statusLabel.setText("Ruch: " + (isWhiteTurn ? "Białych" : "Czarnych"));
     }
 
     private void checkGameState() {
-        //TODO: add check / mate check
+        if (isCheckmate) {
+            endGame((isWhiteTurn ? "Białe" : "Czarne") + " wygrały!");
+        } else if (isStalemate) {
+            endGame("Gra zakończona remisem.");
+        }
     }
+
 
     private void resetGame() {
         chessboard = new Chessboard();
