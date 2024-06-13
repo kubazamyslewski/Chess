@@ -169,7 +169,7 @@ public class ChessboardGUI extends JFrame {
                 movesArray = PieceBehaviour.queenLegalMoves(startSquare, chessboard.getSquares());
                 break;
             case "King":
-                movesArray = PieceBehaviour.kingLegalMoves(startSquare, chessboard.getSquares());
+                movesArray = PieceBehaviour.kingLegalMoves(startSquare, chessboard.getSquares(), true);
                 break;
             case "Pawn":
                 movesArray = PieceBehaviour.pawnLegalMoves(startSquare, chessboard.getSquares());

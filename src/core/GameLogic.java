@@ -123,6 +123,22 @@ public class GameLogic {
         return causingCheck;
     }
 
+    public static boolean isSquareSafe(Square standingOn, Square squareToCheck, Square[][] contextBoard) {
+        Move[] dangerZones;
+        PieceColor kingsColor = standingOn.getPiece().getPlayer().getColor();
+        for (int x = 0; x < contextBoard.length; x++) {
+            for (int y = 0; y < contextBoard[0].length; y++) {
+                if ((contextBoard[x][y].getPiece() != null) && (!contextBoard[x][y].getPiece().getPlayer().getColor().equals(kingsColor))) {
+                    dangerZones = PieceBehaviour.endangersWhatLookup(contextBoard[x][y], contextBoard);
+                    for (Move m : dangerZones) {
+                        if (m.getEndSquare().equals(squareToCheck)) return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
 
     public static Square findKingSquare(Square[][] squares, String color) {
         for (int i = 0; i < squares.length; i++) {
@@ -179,7 +195,7 @@ public class GameLogic {
 
         switch (movingPiece.getName()) {
             case "King":
-                legalMoves = PieceBehaviour.kingLegalMoves(startSquare, squares);
+                legalMoves = PieceBehaviour.kingLegalMoves(startSquare, squares, false);
                 break;
             case "Queen":
                 legalMoves = PieceBehaviour.queenLegalMoves(startSquare, squares);
