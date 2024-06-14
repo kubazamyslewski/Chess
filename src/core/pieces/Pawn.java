@@ -10,6 +10,7 @@ public class Pawn extends Piece {
 
     public Pawn(Player player) {
         super(player);
+        this.name = "Pawn";
     }
     public boolean getDown(){
         return down;

@@ -140,9 +140,10 @@ public class FileHandler {
     	try {
             FileInputStream fileIn = new FileInputStream(foldername + "\\" + serializeFileName);
             ObjectInputStream in = new ObjectInputStream(fileIn);
+            Object readObject = (Serializable) in.readObject(); 
             in.close();
             fileIn.close();
-            return (Serializable) in.readObject();
+            return (Serializable) readObject;
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
