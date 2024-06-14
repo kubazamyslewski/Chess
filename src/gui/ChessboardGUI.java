@@ -115,14 +115,17 @@ public class ChessboardGUI extends JFrame {
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
                 Square square = chessboard.getSquare(x, y);
-                Piece piece = square.getPiece();
-                /*switch (piece){
-                    //case :
-
-                }*/
-
-                if (piece == null) {
+                if (square.getPiece() == null) {
                     gameStateBuilder.append("0 ");
+                }
+                else{
+                    if (square.getPiece().getColor() == "WHITE"){
+                        gameStateBuilder.append("White");
+                    }
+                    else{
+                        gameStateBuilder.append("Black");
+                    }
+                    gameStateBuilder.append(square.getPiece().getName() + " ");
                 }
             }
             gameStateBuilder.append("\n");
