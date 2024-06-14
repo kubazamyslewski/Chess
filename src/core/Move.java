@@ -12,6 +12,7 @@ import java.io.Serializable;
 public class Move implements Serializable {
     private Square startSquare;
     private Square endSquare;
+    private boolean isItCheck;
 
     private boolean promotion = false;
 
@@ -20,6 +21,13 @@ public class Move implements Serializable {
     public Move(Square startSquare, Square endSquare){
         this.startSquare = startSquare;
         this.endSquare = endSquare;
+        this.isItCheck = false;
+    }
+
+    public Move(Square startSquare, Square endSquare, boolean isItCheck) {
+        this.startSquare = startSquare;
+        this.endSquare = endSquare;
+        this.isItCheck = true;
     }
 
     public void setEndSquare(Square endSquare) {

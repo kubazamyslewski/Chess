@@ -20,6 +20,8 @@ public class ChessboardGUI extends JFrame {
     Move[] possibleMoves;
     private Boolean movePrep = false;
     private Boolean isWhiteTurn = true;
+    private boolean isCheckOngoing = false;
+    private boolean isCheckEscape = false;
     //TODO: method to check checkmate/stalemate
     private boolean isCheckmate = false;
     private boolean isStalemate = false;
@@ -244,6 +246,79 @@ public class ChessboardGUI extends JFrame {
         Square square = button.getSquare();
         Piece piece = square.getPiece();
 
+        if (isCheckEscape) {
+            if(isWhiteTurn) {
+                if (button.getBackground().equals(Color.CYAN)) {
+                    Move move = null;
+                    for (Move m : possibleMoves) {
+                        if (m.getEndSquare().equals(button.getSquare())) {
+                            move = m;
+                            break;
+                        }
+                    }
+                    if (move != null) {
+                        chessboard.makeMove(move);
+
+                        updateBoard();
+                        isCheckOngoing = false;
+                        isCheckEscape = false;
+                        clearHighlightedSquares();
+                        checkGameState();
+                        switchTurn();
+                    } else {
+                        return;
+                    }
+                } else {
+                    return;
+                }
+            } else {
+                if (button.getBackground().equals(Color.CYAN)) {
+                    Move move = null;
+                    for (Move m : possibleMoves) {
+                        if (m.getEndSquare().equals(button.getSquare())) {
+                            move = m;
+                            break;
+                        }
+                    }
+                    if (move != null) {
+                        chessboard.makeMove(move);
+
+                        updateBoard();
+                        isCheckOngoing = false;
+                        isCheckEscape = false;
+                        clearHighlightedSquares();
+                        checkGameState();
+                        switchTurn();
+                    } else {
+                        return;
+                    }
+                } else {
+                    return;
+                }
+            }
+
+        }
+
+        if (isCheckOngoing) {
+            if (isWhiteTurn) {
+                if (!button.getSquare().equals(GameLogic.findKingSquare(chessboard.getSquares(), "WHITE"))) {
+                    return;
+                } else {
+                    isCheckEscape = true;
+                    possibleMoves = highlightLegalMoves(square);
+                    return;
+                }
+            } else {
+                if (!button.getSquare().equals(GameLogic.findKingSquare(chessboard.getSquares(), "BLACK"))) {
+                    return;
+                } else {
+                    isCheckEscape = true;
+                    possibleMoves = highlightLegalMoves(square);
+                    return;
+                }
+            }
+        }
+
         if (movePrep) {
             Move move = null;
             if (button.getBackground().equals(Color.CYAN)) {
@@ -255,9 +330,25 @@ public class ChessboardGUI extends JFrame {
                 }
                 if (move != null) {
                     chessboard.makeMove(move);
+
                     updateBoard();
-                    checkGameState();
+
                     clearHighlightedSquares();
+
+                    if (isWhiteTurn) {
+                        Square kingSquare = GameLogic.findKingSquare(chessboard.getSquares(), "BLACK");
+                        if (!GameLogic.isSquareSafe(kingSquare, kingSquare, chessboard.getSquares())) {
+                            squareButtons[kingSquare.getX()][kingSquare.getY()].setBackground(Color.RED);
+                            isCheckOngoing = true;
+                        }
+                    } else {
+                        Square kingSquare = GameLogic.findKingSquare(chessboard.getSquares(), "WHITE");
+                        if (!GameLogic.isSquareSafe(kingSquare, kingSquare, chessboard.getSquares())) {
+                            squareButtons[kingSquare.getX()][kingSquare.getY()].setBackground(Color.RED);
+                            isCheckOngoing = true;
+                        }
+                    }
+                    checkGameState();
                     switchTurn();
                 }
                 movePrep = false;
@@ -350,6 +441,7 @@ public class ChessboardGUI extends JFrame {
         chessboard.setPiecesAtStart(playerWhite, playerBlack);
         initializeBoard();
         isWhiteTurn = true;
+        isCheckOngoing = false;
         statusLabel.setText("Turn: White");
     }
 

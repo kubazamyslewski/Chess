@@ -121,7 +121,7 @@ public class Chessboard implements Serializable{
      * It the changes 8x8 table appropriately
      * @param move
      */
-    public void makeMove(Move move){
+    public boolean makeMove(Move move){
     	Square startSquare = move.getStartSquare();
     	Square endSquare = move.getEndSquare();
 
@@ -136,7 +136,12 @@ public class Chessboard implements Serializable{
     	if (move.isPromotion()) {
     		endSquare.setPiece(move.getPromotionPiece());
 			}
-    	
+
+			if (GameLogic.isMoveCheckingOpponentsKing(endSquare.getPiece().getPlayer().getColor(), squares)) {
+				return true;
+			}
+
+			return false;
     }
 
 

@@ -249,4 +249,17 @@ public class GameLogic {
 
         return false;
     }
+
+
+    public static boolean isMoveCheckingOpponentsKing(PieceColor color, Square[][] squares) {
+        boolean checkFactor;
+        if(color.equals(PieceColor.WHITE)) {
+            Square kingSquare = findKingSquare(squares, "BLACK");
+            checkFactor = isSquareSafe(kingSquare, kingSquare, squares);
+        } else {
+            Square kingSquare = findKingSquare(squares, "WHITE");
+            checkFactor = isSquareSafe(kingSquare, kingSquare, squares);
+        }
+        return !checkFactor;
+    }
 }

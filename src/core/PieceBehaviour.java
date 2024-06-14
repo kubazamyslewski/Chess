@@ -341,7 +341,7 @@ public class PieceBehaviour {
             int newY = y + dir[1];
             if (newX >= 0 && newX < squares.length && newY >= 0 && newY < squares[0].length) {
                 Piece targetPiece = squares[newX][newY].getPiece();
-                if ((targetPiece != null && targetPiece.getColor().equals(piece.getColor())) || targetPiece == null) {
+                if ((targetPiece != null && targetPiece.getColor().equals(piece.getColor())) || targetPiece == null || (targetPiece != null && !targetPiece.getColor().equals(piece.getColor()))) {
                     canAttack[count] = new Move(checkedSquare, squares[newX][newY]);
                     count++;
                 }
