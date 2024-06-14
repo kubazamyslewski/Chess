@@ -2,23 +2,33 @@ package core;
 
 import core.pieces.Piece;
 
+import java.io.Serializable;
+
 /**
  *  This class carries an information on from what to what square player wants to move
  *  Later if the move is promotion change the promotion boolean to true
  *  then also it can be given a promotion piece
  */
-public class Move {
-     private Square startSquare;
-     private Square endSquare;
+public class Move implements Serializable {
+    private Square startSquare;
+    private Square endSquare;
+    private boolean isItCheck;
 
-     private boolean promotion = false;
+    private boolean promotion = false;
 
-     private Piece promotionPiece;
+    private Piece promotionPiece;
 
-     public Move(Square startSquare, Square endSquare){
-         this.startSquare = startSquare;
-         this.endSquare = endSquare;
-     }
+    public Move(Square startSquare, Square endSquare){
+        this.startSquare = startSquare;
+        this.endSquare = endSquare;
+        this.isItCheck = false;
+    }
+
+    public Move(Square startSquare, Square endSquare, boolean isItCheck) {
+        this.startSquare = startSquare;
+        this.endSquare = endSquare;
+        this.isItCheck = true;
+    }
 
     public void setEndSquare(Square endSquare) {
         this.endSquare = endSquare;

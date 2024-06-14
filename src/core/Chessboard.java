@@ -3,6 +3,8 @@ package core;
 import java.io.Serializable;
 
 import core.pieces.*;
+import enums.PieceColor;
+import players.HumanPlayer;
 import players.Player;
 
 /**
@@ -12,6 +14,17 @@ import players.Player;
  */
 public class Chessboard implements Serializable{
     private Square[][] squares;
+
+	// test main
+	public static void main(String[] args) {
+		Chessboard board = new Chessboard();
+		board.setSquares();
+		board.setPiecesAtStart(new HumanPlayer(), new HumanPlayer());
+		Move[] movesArray = PieceBehaviour.queenLegalMoves(board.getSquare(3, 0), board.getSquares());
+		for (Move m : movesArray) {
+			System.out.println("x:" + m.getEndSquare().getX() + " y:" + m.getEndSquare().getY());
+		}
+	}
 
     /**
      * Make a board full of sqares
@@ -24,6 +37,12 @@ public class Chessboard implements Serializable{
     		}
     	}
     }
+	public Square getSquare(int x, int y) {
+		if (x >= 0 && x < squares.length && y >= 0 && y < squares[0].length) {
+			return squares[x][y];
+		}
+		return null; //
+	}
     
     /**
      * Incializes all squares on the board assigns right player for every piece
@@ -32,10 +51,10 @@ public class Chessboard implements Serializable{
      */
     public void setPiecesAtStart(Player playerWhite, Player playerBlack) {
     	//initialize Black rooks
-    	Rook westernBlackRook = new Rook(playerBlack);
-    	squares[0][0].setPiece(westernBlackRook);
-    	Rook easternBlackRook = new Rook(playerBlack);
-    	squares[7][0].setPiece(easternBlackRook);
+    	Rook topBlackRook = new Rook(playerBlack);
+    	squares[0][0].setPiece(topBlackRook);
+    	Rook bottomBlackRook = new Rook(playerBlack);
+    	squares[7][0].setPiece(bottomBlackRook);
     	
     	//Black knights
     	Knight westernBlackKnight = new Knight(playerBlack);
@@ -59,10 +78,10 @@ public class Chessboard implements Serializable{
     	
     	
     	//initialize White rooks
-    	Rook westernWhiteRook = new Rook(playerWhite);
-    	squares[0][7].setPiece(westernWhiteRook);
-    	Rook easternWhiteRook = new Rook(playerWhite);
-    	squares[7][7].setPiece(easternWhiteRook);
+    	Rook topWhiteRook = new Rook(playerWhite);
+    	squares[0][7].setPiece(topWhiteRook);
+    	Rook bottomWhiteRook = new Rook(playerWhite);
+    	squares[7][7].setPiece(bottomWhiteRook);
     	
     	//White knights
     	Knight westernWhiteKnight = new Knight(playerWhite);
@@ -83,8 +102,18 @@ public class Chessboard implements Serializable{
     	//White king
     	King WhiteKing = new King(playerWhite);
     	squares[4][7].setPiece(WhiteKing);
-    	
-    	
+
+			//White pawns
+			for (int i = 0; i <= 7; i++) {
+				Pawn WhitePawn = new Pawn(playerWhite);
+				squares[i][6].setPiece(WhitePawn);
+			}
+
+			//Black pawns
+			for (int i = 0; i <= 7; i++) {
+				Pawn BlackPawn = new Pawn(playerBlack);
+				squares[i][1].setPiece(BlackPawn);
+			}
     }
 
     /**
@@ -92,24 +121,32 @@ public class Chessboard implements Serializable{
      * It the changes 8x8 table appropriately
      * @param move
      */
-    public void makeMove(Move move){
+    public boolean makeMove(Move move){
     	Square startSquare = move.getStartSquare();
     	Square endSquare = move.getEndSquare();
-    	
+
+		if(startSquare.getPiece() instanceof King || startSquare.getPiece() instanceof Rook){
+			startSquare.getPiece().setHasMoved(true);
+		}
+
     	endSquare.setPiece(null);
     	endSquare.setPiece(startSquare.getPiece());
     	startSquare.setPiece(null);
     	
     	if (move.isPromotion()) {
     		endSquare.setPiece(move.getPromotionPiece());
-		}
-    	
+			}
+
+			if (GameLogic.isMoveCheckingOpponentsKing(endSquare.getPiece().getPlayer().getColor(), squares)) {
+				return true;
+			}
+
+			return false;
     }
 
-    
+
 
     public Square[][] getSquares() {
         return squares;
     }
-
 }
