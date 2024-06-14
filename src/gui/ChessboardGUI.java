@@ -442,7 +442,7 @@ public class ChessboardGUI extends JFrame {
         initializeBoard();
         isWhiteTurn = true;
         isCheckOngoing = false;
-        statusLabel.setText("Turn: White");
+        statusLabel.setText("Ruch: Białych");
     }
 
     public static void main(String[] args) {
